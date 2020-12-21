@@ -7,7 +7,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 
-namespace NotifyIconSampleApp.ViewModels
+namespace NotifyIconSampleApp
 {
     class ColorsViewModel : INotifyPropertyChanged
     {
