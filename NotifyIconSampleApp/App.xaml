@@ -2,9 +2,9 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:NotifyIconSampleApp"
-             xmlns:viewModels="clr-namespace:NotifyIconSampleApp.ViewModels"
+             xmlns:ni="clr-namespace:NotifyIcon.Wpf;assembly=NotifyIconWpf"
              xmlns:resources="clr-namespace:NotifyIconSampleApp.Resources"
-             StartupUri="MainWindow.xaml">
+             ShutdownMode="OnExplicitShutdown">
     <Application.Resources>
         <ContextMenu x:Key="ColorsMenu">
             <MenuItem Name="Red" Header="{x:Static resources:Colors.RedLabel}" Command="{Binding RedMenuCommand}"  />
@@ -12,5 +12,10 @@
             <MenuItem Name="Blue" Header="{x:Static resources:Colors.BlueLabel}" Command="{Binding BlueMenuCommand}" />
             <MenuItem Name="ClearColors" Header="{x:Static resources:Colors.ClearColorLabel}" Command="{Binding ClearMenuCommand}" />
         </ContextMenu>
+
+        <ni:NotifyIconComponent x:Key="NotifyIconComponent"
+            Icon="Resources/Icons/no-color.ico"
+            ToolTip="{x:Static resources:Colors.NoColorToolTip}"
+            ContextMenu="{StaticResource ColorsMenu}" />
     </Application.Resources>
 </Application>

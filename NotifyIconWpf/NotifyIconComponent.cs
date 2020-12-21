@@ -4,14 +4,16 @@ using System.Windows.Media;
 
 namespace NotifyIcon.Wpf
 {
-    public partial class Proxy : FrameworkElement, IDisposable
+    public partial class NotifyIconComponent : FrameworkElement, IDisposable
     {
         #region Properties
 
+        // Icon property
+        // An image source that provides the icon to display in the notification area
         public static readonly DependencyProperty IconProperty = DependencyProperty.Register(
-          "AquariumGraphic",
+          "Icon",
           typeof(ImageSource),
-          typeof(Proxy),
+          typeof(NotifyIconComponent),
           new FrameworkPropertyMetadata(null,
               FrameworkPropertyMetadataOptions.AffectsRender,
               new PropertyChangedCallback(OnIconChanged)
@@ -23,8 +25,6 @@ namespace NotifyIcon.Wpf
             get { return (ImageSource)GetValue(IconProperty); }
             set { SetValue(IconProperty, value); }
         }
-
-
 
         #endregion Properties
 
