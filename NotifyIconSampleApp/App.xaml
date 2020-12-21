@@ -2,8 +2,15 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:NotifyIconSampleApp"
+             xmlns:viewModels="clr-namespace:NotifyIconSampleApp.ViewModels"
+             xmlns:resources="clr-namespace:NotifyIconSampleApp.Resources"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ContextMenu x:Key="ColorsMenu">
+            <MenuItem Name="Red" Header="{x:Static resources:Colors.RedLabel}" Command="{Binding RedMenuCommand}"  />
+            <MenuItem Name="Green" Header="{x:Static resources:Colors.GreenLabel}" Command="{Binding GreenMenuCommand}" />
+            <MenuItem Name="Blue" Header="{x:Static resources:Colors.BlueLabel}" Command="{Binding BlueMenuCommand}" />
+            <MenuItem Name="ClearColors" Header="{x:Static resources:Colors.ClearColorLabel}" Command="{Binding ClearMenuCommand}" />
+        </ContextMenu>
     </Application.Resources>
 </Application>

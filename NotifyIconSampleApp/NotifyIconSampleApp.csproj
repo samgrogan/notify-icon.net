@@ -76,11 +76,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Resources\Resources.Designer.cs">
+    <Compile Include="DelegateCommand.cs" />
+    <Compile Include="Resources\Colors.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
+      <DependentUpon>Colors.resx</DependentUpon>
     </Compile>
+    <Compile Include="ColorsViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -112,9 +114,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    <EmbeddedResource Include="Resources\Colors.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Colors.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -126,11 +128,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NotifyIconWpf\NotifyIconWpf.csproj">
-      <Project>{fbacba6d-3dc8-48ec-8a8e-12b8a85bff10}</Project>
+      <Project>{fd7aebf8-0044-44c7-8944-ed1d33eb9477}</Project>
       <Name>NotifyIconWpf</Name>
     </ProjectReference>
     <ProjectReference Include="..\NotifyIcon\NotifyIcon.vcxproj">
-      <Project>{423c5939-f4d0-421a-a0bb-8fbc46f2cff5}</Project>
+      <Project>{f5dd8d1c-0658-46c9-a5c7-f6b9b4826f93}</Project>
       <Name>NotifyIcon</Name>
     </ProjectReference>
   </ItemGroup>

@@ -22,24 +22,24 @@ namespace NotifyIconSampleApp.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Colors {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal Colors() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NotifyIconSampleApp.Resources.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NotifyIconSampleApp.Resources.Colors", typeof(Colors).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace NotifyIconSampleApp.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace NotifyIconSampleApp.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Blue.
         /// </summary>
-        internal static string BlueLabel {
+        public static string BlueLabel {
             get {
                 return ResourceManager.GetString("BlueLabel", resourceCulture);
             }
@@ -72,16 +72,25 @@ namespace NotifyIconSampleApp.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Blue is one of the three primary colours of pigments in painting and traditional colour theory, as well as in the RGB colour model. It lies between violet and green on the spectrum of visible light. The eye perceives blue when observing light with a dominant wavelength between approximately 450 and 495 nanometres..
         /// </summary>
-        internal static string BlueTool {
+        public static string BlueTool {
             get {
                 return ResourceManager.GetString("BlueTool", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear Color.
+        /// </summary>
+        public static string ClearColorLabel {
+            get {
+                return ResourceManager.GetString("ClearColorLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Green.
         /// </summary>
-        internal static string GreenLabel {
+        public static string GreenLabel {
             get {
                 return ResourceManager.GetString("GreenLabel", resourceCulture);
             }
@@ -91,7 +100,7 @@ namespace NotifyIconSampleApp.Resources {
         ///   Looks up a localized string similar to This is the first line of the tooltip for the color green.
         ///This is the second line of the tool tip..
         /// </summary>
-        internal static string GreenToolTip {
+        public static string GreenToolTip {
             get {
                 return ResourceManager.GetString("GreenToolTip", resourceCulture);
             }
@@ -100,7 +109,7 @@ namespace NotifyIconSampleApp.Resources {
         /// <summary>
         ///   Looks up a localized string similar to No color chosen..
         /// </summary>
-        internal static string NoColorToolTip {
+        public static string NoColorToolTip {
             get {
                 return ResourceManager.GetString("NoColorToolTip", resourceCulture);
             }
@@ -109,7 +118,7 @@ namespace NotifyIconSampleApp.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Red.
         /// </summary>
-        internal static string RedLabel {
+        public static string RedLabel {
             get {
                 return ResourceManager.GetString("RedLabel", resourceCulture);
             }
@@ -118,7 +127,7 @@ namespace NotifyIconSampleApp.Resources {
         /// <summary>
         ///   Looks up a localized string similar to This is a short tooltip for the color red..
         /// </summary>
-        internal static string RedToolTip {
+        public static string RedToolTip {
             get {
                 return ResourceManager.GetString("RedToolTip", resourceCulture);
             }
