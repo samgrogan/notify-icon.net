@@ -42,8 +42,6 @@ namespace NotifyIcon.Wpf
 
         public NotifyIconComponent()
         {
-            _itemGuid = new Guid(this.Uid);
-            _notifyIcon = new NotificationAreaIcon(_itemGuid);
         }
 
         public void Dispose()
@@ -52,7 +50,21 @@ namespace NotifyIcon.Wpf
 
         #endregion Public Methods
 
-        #region Private Methods
+        #region Internal Methods
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+
+            // Try to convert the Uid to a GUID, or create a new guid
+            if (!Guid.TryParse(this.Uid, out _itemGuid))
+            {
+                _itemGuid = Guid.NewGuid();
+            }
+
+            // Create the Win32 Notification Area Icon
+            _notifyIcon = new NotificationAreaIcon(_itemGuid);
+        }
 
         private static void OnIconChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

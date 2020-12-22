@@ -1,8 +1,10 @@
 #pragma once
 
+#pragma comment(lib, "shell32.lib")
+
 #include <Windows.h>
 #include <shellapi.h>
-#pragma comment(lib, "shell32.lib")
+#include "MessageListenerWindow.h"
 
 using namespace System;
 
@@ -13,7 +15,7 @@ namespace NotifyIcon {
 		{
 		private:
 			// The window that is used to receive events from the notification icon
-			HWND _message_window;
+			MessageListenerWindow^ _message_listener;
 
 			// The icon to display in the notification area
 			HICON _icon;
@@ -26,6 +28,9 @@ namespace NotifyIcon {
 
 			// Set the version flag
 			bool SetVersion();
+
+			// Initialize the icon data structure
+			void InitializeIconData(Guid^ ItemGuid);
 
 		public:
 			// Properties

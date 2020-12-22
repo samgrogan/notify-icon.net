@@ -5,15 +5,12 @@ using namespace NotifyIcon::Win32;
 // Constructor
 NotificationAreaIcon::NotificationAreaIcon(Guid^ ItemGuid)
 {
-	// Allocate the structure to hold the notify icon data
-	_icon_data = new NOTIFYICONDATA;
-	_icon_data->cbSize = sizeof(NOTIFYICONDATA);
+	// Create the listener window
+	_message_listener = gcnew MessageListenerWindow();
 
-	// Store the GUID
-	array<Byte>^ guidData = ItemGuid->ToByteArray();
-	pin_ptr<Byte> data = &(guidData[0]);
+	InitializeIconData(ItemGuid);
 
-	_icon_data->guidItem = *(_GUID*)data;
+
 }
 
 // Add the icon to the notification area
@@ -56,4 +53,21 @@ NotificationAreaIcon::~NotificationAreaIcon()
 void NotificationAreaIcon::ToolTip::set(String^ toolTip)
 {
 
+}
+
+// Initialize the icon data structure
+void NotificationAreaIcon::InitializeIconData(Guid^ ItemGuid)
+{
+	if (_icon_data != nullptr)
+	{
+		// Allocate and initialize the structure to hold the notify icon data
+		_icon_data = new NOTIFYICONDATA;
+		memset(_icon_data, 0, sizeof(NOTIFYICONDATA));
+		_icon_data->cbSize = sizeof(NOTIFYICONDATA);
+
+		// Store the GUID
+		array<Byte>^ guidData = ItemGuid->ToByteArray();
+		pin_ptr<Byte> data = &(guidData[0]);
+		_icon_data->guidItem = *(_GUID*)data;
+	}
 }
