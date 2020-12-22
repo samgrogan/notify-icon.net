@@ -39,6 +39,12 @@ namespace NotifyIconSampleApp
                 CommandAction = () => { MessageBox.Show("Clear Color"); }
             };
 
+        public ICommand QuitCommand =>
+            new DelegateCommand
+            {
+                CommandAction = () => { Application.Current.Shutdown(); }
+            };
+
         #endregion Commands
 
     }

@@ -116,6 +116,15 @@ namespace NotifyIconSampleApp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Quit.
+        /// </summary>
+        public static string QuitLabel {
+            get {
+                return ResourceManager.GetString("QuitLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Red.
         /// </summary>
         public static string RedLabel {

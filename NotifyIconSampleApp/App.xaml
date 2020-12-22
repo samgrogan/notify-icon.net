@@ -11,6 +11,7 @@
             <MenuItem Name="Green" Header="{x:Static resources:Colors.GreenLabel}" Command="{Binding GreenMenuCommand}" />
             <MenuItem Name="Blue" Header="{x:Static resources:Colors.BlueLabel}" Command="{Binding BlueMenuCommand}" />
             <MenuItem Name="ClearColors" Header="{x:Static resources:Colors.ClearColorLabel}" Command="{Binding ClearMenuCommand}" />
+            <MenuItem Name="Quit" Header="{x:Static resources:Colors.QuitLabel}" Command="{Binding QuitCommand}" />
         </ContextMenu>
 
         <ni:NotifyIconComponent x:Key="NotifyIconComponent"

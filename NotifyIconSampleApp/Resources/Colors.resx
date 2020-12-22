@@ -136,6 +136,9 @@ This is the second line of the tool tip.</value>
   <data name="NoColorToolTip" xml:space="preserve">
     <value>No color chosen.</value>
   </data>
+  <data name="QuitLabel" xml:space="preserve">
+    <value>Quit</value>
+  </data>
   <data name="RedLabel" xml:space="preserve">
     <value>Red</value>
   </data>
