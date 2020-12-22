@@ -1,11 +1,21 @@
 using System;
 using System.Windows;
 using System.Windows.Media;
+using NotifyIcon.Win32;
 
 namespace NotifyIcon.Wpf
 {
     public partial class NotifyIconComponent : FrameworkElement, IDisposable
     {
+        #region Members
+
+        // The win32 Notification Icon that this class wraps
+        private NotificationAreaIcon _notifyIcon;
+
+        private Guid _itemGuid;
+
+        #endregion Members
+
         #region Properties
 
         // Icon property
@@ -30,6 +40,12 @@ namespace NotifyIcon.Wpf
 
         #region Public Methods
 
+        public NotifyIconComponent()
+        {
+            _itemGuid = new Guid(this.Uid);
+            _notifyIcon = new NotificationAreaIcon(_itemGuid);
+        }
+
         public void Dispose()
         {
         }
@@ -39,6 +55,10 @@ namespace NotifyIcon.Wpf
         #region Private Methods
 
         private static void OnIconChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+        }
+
+        private static void OnGuidChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
         }
 

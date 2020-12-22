@@ -3,9 +3,17 @@
 using namespace NotifyIcon::Win32;
 
 // Constructor
-NotificationAreaIcon::NotificationAreaIcon(String^ ItemGuid)
+NotificationAreaIcon::NotificationAreaIcon(Guid^ ItemGuid)
 {
+	// Allocate the structure to hold the notify icon data
+	_icon_data = new NOTIFYICONDATA;
+	_icon_data->cbSize = sizeof(NOTIFYICONDATA);
 
+	// Store the GUID
+	array<Byte>^ guidData = ItemGuid->ToByteArray();
+	pin_ptr<Byte> data = &(guidData[0]);
+
+	_icon_data->guidItem = *(_GUID*)data;
 }
 
 // Add the icon to the notification area

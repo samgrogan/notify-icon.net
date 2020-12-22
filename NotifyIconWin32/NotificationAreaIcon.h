@@ -13,13 +13,13 @@ namespace NotifyIcon {
 		{
 		private:
 			// The window that is used to receive events from the notification icon
-			HWND _messageWindow;
+			HWND _message_window;
 
 			// The icon to display in the notification area
 			HICON _icon;
 
-			// The unique GUID that identifies this notification icon
-			GUID* _guidItem;
+			// The struct that describes this notification icon
+			PNOTIFYICONDATA _icon_data;
 
 			// Update the properties of the notification icon
 			bool Modify();
@@ -33,7 +33,7 @@ namespace NotifyIcon {
 			property String^ ToolTip { void set(String^ toolTip); }
 
 			// Constructor
-			NotificationAreaIcon(String^ ItemGuid);
+			NotificationAreaIcon(Guid^ ItemGuid);
 
 			// Add the icon to the notification area
 			bool Add();

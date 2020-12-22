@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace NotifyIconSampleApp
 {
-    class ColorsViewModel : INotifyPropertyChanged
+    public class ColorsViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
