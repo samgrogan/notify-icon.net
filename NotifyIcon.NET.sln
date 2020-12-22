@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotifyIconSampleApp", "Noti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotifyIconWpf", "NotifyIconWpf\NotifyIconWpf.csproj", "{FD7AEBF8-0044-44C7-8944-ED1D33EB9477}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NotifyIcon", "NotifyIcon\NotifyIcon.vcxproj", "{F5DD8D1C-0658-46C9-A5C7-F6B9B4826F93}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NotifyIconWin32", "NotifyIconWin32\NotifyIconWin32.vcxproj", "{F5DD8D1C-0658-46C9-A5C7-F6B9B4826F93}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

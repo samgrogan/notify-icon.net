@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NotifyIcon\NotifyIcon.vcxproj" />
+    <ProjectReference Include="..\NotifyIconWin32\NotifyIconWin32.vcxproj" />
   </ItemGroup>
 
 </Project>

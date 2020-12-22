@@ -123,7 +123,7 @@
       <Project>{fd7aebf8-0044-44c7-8944-ed1d33eb9477}</Project>
       <Name>NotifyIconWpf</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NotifyIcon\NotifyIcon.vcxproj">
+    <ProjectReference Include="..\NotifyIconWin32\NotifyIconWin32.vcxproj">
       <Project>{f5dd8d1c-0658-46c9-a5c7-f6b9b4826f93}</Project>
       <Name>NotifyIcon</Name>
     </ProjectReference>
