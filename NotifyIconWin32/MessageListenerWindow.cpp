@@ -32,3 +32,9 @@ LRESULT MessageListenerWindow::OnMessageReceived(HWND hwnd, UINT uMsg, WPARAM wP
 	// Finally pass the message to the default window procedure
 	return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
+
+// The handle to the window
+HWND MessageListenerWindow::Window::get()
+{
+	return _window;
+}

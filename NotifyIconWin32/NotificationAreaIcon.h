@@ -4,6 +4,8 @@
 
 #include <Windows.h>
 #include <shellapi.h>
+#include <vcclr.h>
+#include <cwchar>
 #include "MessageListenerWindow.h"
 
 using namespace System;
@@ -36,6 +38,9 @@ namespace NotifyIcon {
 			// Properties
 			// The tooltip to display when the cursor if over the notification icon
 			property String^ ToolTip { void set(String^ toolTip); }
+
+			// The icon to display in the notification area
+			property HICON Icon { void set(HICON icon); }
 
 			// Constructor
 			NotificationAreaIcon(Guid^ ItemGuid);

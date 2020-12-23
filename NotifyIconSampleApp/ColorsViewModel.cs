@@ -9,10 +9,8 @@ using System.Windows.Input;
 
 namespace NotifyIconSampleApp
 {
-    public class ColorsViewModel : INotifyPropertyChanged
+    public class ColorsViewModel
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         #region Commands
 
         public ICommand RedMenuCommand =>

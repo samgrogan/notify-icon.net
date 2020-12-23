@@ -22,6 +22,11 @@ namespace NotifyIcon {
 			static LRESULT OnMessageReceived(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 		public:
+			// Properties
+
+			// The handle to the window
+			property HWND Window { HWND get(); }
+
 			// Constructor
 			MessageListenerWindow();
 		};

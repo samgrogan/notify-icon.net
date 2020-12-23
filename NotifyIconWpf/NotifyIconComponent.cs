@@ -1,11 +1,13 @@
 using System;
 using System.Windows;
 using System.Windows.Media;
+using System.ComponentModel;
 using NotifyIcon.Win32;
+using System.Diagnostics;
 
 namespace NotifyIcon.Wpf
 {
-    public partial class NotifyIconComponent : FrameworkElement, IDisposable
+    public partial class NotifyIconComponent : FrameworkElement, IDisposable, INotifyPropertyChanged
     {
         #region Members
 
@@ -26,9 +28,11 @@ namespace NotifyIcon.Wpf
           typeof(NotifyIconComponent),
           new FrameworkPropertyMetadata(null,
               FrameworkPropertyMetadataOptions.AffectsRender,
-              new PropertyChangedCallback(OnIconChanged)
+              new PropertyChangedCallback(IconPropertyChanged)
           )
         );
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public ImageSource Icon
         {
@@ -42,6 +46,7 @@ namespace NotifyIcon.Wpf
 
         public NotifyIconComponent()
         {
+            PropertyChanged = PropertyChangedEventHandler;
         }
 
         public void Dispose()
@@ -63,17 +68,28 @@ namespace NotifyIcon.Wpf
             }
 
             // Create the Win32 Notification Area Icon
-            _notifyIcon = new NotificationAreaIcon(_itemGuid);
+            _notifyIcon = new NotificationAreaIcon(_itemGuid)
+            {
+                ToolTip = this.ToolTip?.ToString()
+            };
         }
 
-        private static void OnIconChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void IconPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            NotifyIconComponent source = d as NotifyIconComponent;
+            source?.OnIconChanged(d, e);
         }
 
-        private static void OnGuidChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private void OnIconChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            // _notifyIcon.
         }
 
-        #endregion Private Methods
+        public static void PropertyChangedEventHandler(object sender, PropertyChangedEventArgs e)
+        {
+            Debug.Write(e.PropertyName);
+        }
+
+        #endregion Internal Methods
     }
 }
