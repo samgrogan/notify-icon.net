@@ -7,7 +7,11 @@ NotificationAreaIcon::NotificationAreaIcon(Guid^ ItemGuid)
 {
 	// Create the listener window
 	_message_listener = new MessageListenerWindow();
-	_message_listener->CreateListenerWindow();
+	if (!_message_listener->CreateListenerWindow()) 
+	{
+		Error^ error = gcnew Error();
+		error->ThrowAsException();
+	}
 
 	// Initialize the data for the tray icon
 	InitializeIconData(ItemGuid);

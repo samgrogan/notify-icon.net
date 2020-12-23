@@ -1,7 +1,9 @@
 #pragma once
 
 #include <Windows.h>
+#include <libloaderapi.h>
 #pragma comment(lib, "user32.lib")
+#pragma comment(lib, "kernel32.lib")
 
 namespace NotifyIcon {
 	namespace Win32 {
@@ -10,7 +12,7 @@ namespace NotifyIcon {
 		{
 		private:
 			// The window handle
-			HWND _window;
+			HWND _window = nullptr;
 
 			// The id of the message sent when the taskbar restarts
 			UINT _taskbar_created_message_id = 0;
@@ -25,7 +27,7 @@ namespace NotifyIcon {
 			HWND GetWindow();
 
 			// Create the window to listen for events
-			void CreateListenerWindow();
+			bool CreateListenerWindow();
 
 			// Constructor
 			MessageListenerWindow();

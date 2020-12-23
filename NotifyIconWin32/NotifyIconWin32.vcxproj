@@ -123,12 +123,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Error.h" />
     <ClInclude Include="NotificationAreaIcon.h" />
     <ClInclude Include="MessageListenerWindow.h" />
     <ClInclude Include="Resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="Error.cpp" />
     <ClCompile Include="NotificationAreaIcon.cpp" />
     <ClCompile Include="MessageListenerWindow.cpp" />
   </ItemGroup>

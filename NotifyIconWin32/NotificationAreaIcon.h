@@ -6,6 +6,8 @@
 #include <shellapi.h>
 #include <vcclr.h>
 #include <cwchar>
+
+#include "Error.h"
 #include "MessageListenerWindow.h"
 
 using namespace System;
@@ -23,7 +25,7 @@ namespace NotifyIcon {
 			HICON _icon = nullptr;
 
 			// The struct that describes this notification icon
-			PNOTIFYICONDATA _icon_data;
+			PNOTIFYICONDATA _icon_data = nullptr;
 
 			// Update the properties of the notification icon
 			bool Modify();
