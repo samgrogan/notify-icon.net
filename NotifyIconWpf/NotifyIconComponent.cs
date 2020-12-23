@@ -13,7 +13,7 @@ namespace NotifyIcon.Wpf
 
         // The win32 Notification Icon that this class wraps
         private NotificationAreaIcon _notifyIcon;
-
+        private ImageSource _icon;
         private Guid _itemGuid;
 
         #endregion Members
@@ -27,17 +27,20 @@ namespace NotifyIcon.Wpf
           typeof(ImageSource),
           typeof(NotifyIconComponent),
           new FrameworkPropertyMetadata(null,
-              FrameworkPropertyMetadataOptions.AffectsRender,
-              new PropertyChangedCallback(IconPropertyChanged)
+              FrameworkPropertyMetadataOptions.AffectsRender
           )
         );
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+
         public ImageSource Icon
         {
-            get { return (ImageSource)GetValue(IconProperty); }
-            set { SetValue(IconProperty, value); }
+            get { return _icon; }
+            set {
+                _icon = value;
+ //               _icon?.ToIcon();
+            }
         }
 
         #endregion Properties
@@ -74,16 +77,15 @@ namespace NotifyIcon.Wpf
             };
         }
 
-        private static void IconPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            NotifyIconComponent source = d as NotifyIconComponent;
-            source?.OnIconChanged(d, e);
-        }
+        //private static void IconPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    NotifyIconComponent source = d as NotifyIconComponent;
+        //    source?.OnIconChanged(d, e);
+        //}
 
-        private void OnIconChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            // _notifyIcon.
-        }
+        //private void OnIconChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //}
 
         public static void PropertyChangedEventHandler(object sender, PropertyChangedEventArgs e)
         {

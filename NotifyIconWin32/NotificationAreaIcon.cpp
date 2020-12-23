@@ -6,7 +6,8 @@ using namespace NotifyIcon::Win32;
 NotificationAreaIcon::NotificationAreaIcon(Guid^ ItemGuid)
 {
 	// Create the listener window
-	_message_listener = gcnew MessageListenerWindow();
+	_message_listener = new MessageListenerWindow();
+	_message_listener->CreateListenerWindow();
 
 	// Initialize the data for the tray icon
 	InitializeIconData(ItemGuid);
@@ -45,7 +46,11 @@ bool NotificationAreaIcon::SetFocus()
 // Destructor
 NotificationAreaIcon::~NotificationAreaIcon()
 {
-
+	if (_message_listener != nullptr)
+	{
+		delete _message_listener;
+		_message_listener = nullptr;
+	}
 }
 
 // The tooltip to display when the cursor if over the notification icon
@@ -86,7 +91,7 @@ void NotificationAreaIcon::InitializeIconData(Guid^ ItemGuid)
 	_icon_data->guidItem = *(_GUID*)data;
 
 	// Attach the listener window
-	_icon_data->hWnd = _message_listener->Window;
+	_icon_data->hWnd = _message_listener->GetWindow();
 
 	// Set the version
 	// Configure for Vista or later

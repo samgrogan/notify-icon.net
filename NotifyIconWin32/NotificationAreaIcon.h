@@ -17,10 +17,10 @@ namespace NotifyIcon {
 		{
 		private:
 			// The window that is used to receive events from the notification icon
-			MessageListenerWindow^ _message_listener;
+			MessageListenerWindow* _message_listener = nullptr;
 
 			// The icon to display in the notification area
-			HICON _icon;
+			HICON _icon = nullptr;
 
 			// The struct that describes this notification icon
 			PNOTIFYICONDATA _icon_data;
