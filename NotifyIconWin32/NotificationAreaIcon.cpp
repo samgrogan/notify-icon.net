@@ -20,6 +20,9 @@ NotificationAreaIcon::NotificationAreaIcon(Guid^ ItemGuid)
 // Add the icon to the notification area
 bool NotificationAreaIcon::Add()
 {
+
+
+
 	return false;
 }
 
@@ -69,13 +72,19 @@ void NotificationAreaIcon::ToolTip::set(String^ toolTip)
 			pin_ptr<const wchar_t> _device_id_ptr = PtrToStringChars(toolTip);
 			wcsncpy_s(_icon_data->szTip, _device_id_ptr, 128);
 		}
+		// TODO: display changes
 	}
 }
 
 // The icon to display in the notification area
 void NotificationAreaIcon::Icon::set(HICON icon)
 {
+	if (_icon_data != nullptr)
+	{
+		_icon_data->hIcon = icon;
 
+		// TODO: display changes
+	}
 }
 
 // Initialize the icon data structure
@@ -88,6 +97,9 @@ void NotificationAreaIcon::InitializeIconData(Guid^ ItemGuid)
 		memset(_icon_data, 0, sizeof(NOTIFYICONDATA));
 		_icon_data->cbSize = sizeof(NOTIFYICONDATA);
 	}
+
+	// Set the id of the messages from the notification icon
+	_icon_data->uCallbackMessage = CALLBACK_MESSAGE_ID;
 
 	// Store the GUID
 	array<Byte>^ guidData = ItemGuid->ToByteArray();
