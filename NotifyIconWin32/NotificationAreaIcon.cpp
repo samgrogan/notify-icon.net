@@ -17,6 +17,19 @@ NotificationAreaIcon::NotificationAreaIcon(Guid^ ItemGuid)
 	InitializeIconData(ItemGuid);
 }
 
+// Show the notification area icon
+void NotificationAreaIcon::ShowIcon()
+{
+
+}
+
+// Hide the notification area icon
+void NotificationAreaIcon::HideIcon()
+{
+
+}
+
+
 // Add the icon to the notification area
 bool NotificationAreaIcon::Add()
 {
