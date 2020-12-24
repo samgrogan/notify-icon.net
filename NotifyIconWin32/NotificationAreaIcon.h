@@ -42,7 +42,7 @@ namespace NotifyIcon {
 			property String^ ToolTip { void set(String^ toolTip); }
 
 			// The icon to display in the notification area
-			property HICON Icon { void set(HICON icon); }
+			property IntPtr^ Icon { void set(IntPtr^ icon); }
 
 			// Constructor
 			NotificationAreaIcon(Guid^ ItemGuid);

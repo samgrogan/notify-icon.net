@@ -15,7 +15,7 @@
     <ni:NotifyIconComponent x:Name="NotifyIconComponent"
                             x:Key="NotifyIconComponent"
                             x:Uid="904a756c-8d7f-4a70-9270-d07a217943e8"
-                            Icon="Resources/Icons/no-color.ico"
+                            Icon="/Resources/Icons/no-color.ico"
                             ToolTip="{x:Static resources:Colors.NoColorToolTip}"
                             ContextMenu="{StaticResource ColorsMenu}">
         <ni:NotifyIconComponent.DataContext>

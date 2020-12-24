@@ -77,11 +77,12 @@ void NotificationAreaIcon::ToolTip::set(String^ toolTip)
 }
 
 // The icon to display in the notification area
-void NotificationAreaIcon::Icon::set(HICON icon)
+void NotificationAreaIcon::Icon::set(IntPtr^ hicon)
 {
+	_icon = static_cast<HICON>(hicon->ToPointer());
 	if (_icon_data != nullptr)
 	{
-		_icon_data->hIcon = icon;
+		_icon_data->hIcon = _icon;
 
 		// TODO: display changes
 	}
