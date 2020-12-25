@@ -20,52 +20,84 @@ NotificationAreaIcon::NotificationAreaIcon(Guid^ ItemGuid)
 // Show the notification area icon
 void NotificationAreaIcon::ShowIcon()
 {
+	// Update the visibility
+	_icon_data->dwState = 0;
 
+	// Add or modify the icon
+	AddOrModify();
+
+	// Set the version
+	SetVersion();
 }
 
 // Hide the notification area icon
 void NotificationAreaIcon::HideIcon()
 {
+	// Update the visibility
+	_icon_data->dwState = NIS_HIDDEN;
 
+	// Add or modify the icon
+	AddOrModify();
+
+	// Set the version
+	SetVersion();
 }
 
 
 // Add the icon to the notification area
-bool NotificationAreaIcon::Add()
+bool NotificationAreaIcon::AddOrModify()
 {
-
-
-
-	return false;
+	if (!_isAdded)
+	{
+		_isAdded = Shell_NotifyIcon(NIM_ADD, _icon_data);
+	}
+	else
+	{
+		return Modify();
+	}
+	return _isAdded;
 }
 
 // Update the properties of the notification icon
 bool NotificationAreaIcon::Modify()
 {
+	if (_isAdded)
+	{
+		return Shell_NotifyIcon(NIM_MODIFY, _icon_data);
+	}
 	return false;
 }
 
 // Remove the icon from the notification area
 bool NotificationAreaIcon::Delete()
 {
-	return false;
+	if (_isAdded)
+	{
+		_isAdded = !Shell_NotifyIcon(NIM_DELETE, _icon_data);
+	}
+
+	return !_isAdded;
 }
 
 // Set the version flag
 bool NotificationAreaIcon::SetVersion()
 {
-	return false;
+	return Shell_NotifyIcon(NIM_SETVERSION, _icon_data);
 }
 
 // Set the focus to the notification icon
 bool NotificationAreaIcon::SetFocus()
 {
-	return false;
+	return Shell_NotifyIcon(NIM_SETFOCUS, _icon_data);;
 }
 
 // Destructor
 NotificationAreaIcon::~NotificationAreaIcon()
 {
+	// Delete the icon
+	Delete();
+	
+	// Remove the listener
 	if (_message_listener != nullptr)
 	{
 		delete _message_listener;
@@ -85,7 +117,10 @@ void NotificationAreaIcon::ToolTip::set(String^ toolTip)
 			pin_ptr<const wchar_t> _device_id_ptr = PtrToStringChars(toolTip);
 			wcsncpy_s(_icon_data->szTip, _device_id_ptr, 128);
 		}
-		// TODO: display changes
+		_icon_data->uFlags |= NIF_TIP;
+
+		// If already visible, update with the changes
+		Modify();
 	}
 }
 
@@ -96,8 +131,10 @@ void NotificationAreaIcon::Icon::set(IntPtr^ hicon)
 	if (_icon_data != nullptr)
 	{
 		_icon_data->hIcon = _icon;
+		_icon_data->uFlags |= NIF_ICON;
 
-		// TODO: display changes
+		// If already visible, update with the changes
+		Modify();
 	}
 }
 
@@ -130,4 +167,6 @@ void NotificationAreaIcon::InitializeIconData(Guid^ ItemGuid)
 	// Initially hidden
 	_icon_data->dwState = NIS_HIDDEN;
 	_icon_data->dwStateMask = NIS_HIDDEN;
+
+	_icon_data->uFlags = NIF_MESSAGE | NIF_STATE | NIF_GUID | NIF_SHOWTIP;
 }

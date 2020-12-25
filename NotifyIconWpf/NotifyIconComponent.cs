@@ -87,6 +87,9 @@ namespace NotifyIcon.Wpf
                 ToolTip = this.ToolTip?.ToString(),
                 Icon = this._icon?.Handle
             };
+
+            // Show the icon
+            _notifyIcon.ShowIcon();
         }
 
         private static void IconPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

@@ -69,8 +69,6 @@ LRESULT CALLBACK MessageListenerWindow::OnMessageReceived(HWND hwnd, UINT uMsg, 
 	case CALLBACK_MESSAGE_ID:
 		switch (LOWORD(lParam))
 		{
-			case WM_MOUSEMOVE:
-				break;
 			case WM_LBUTTONDOWN:
 				break;
 			case WM_LBUTTONUP:

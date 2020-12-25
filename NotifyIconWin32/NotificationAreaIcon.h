@@ -27,17 +27,20 @@ namespace NotifyIcon {
 			// The struct that describes this notification icon
 			PNOTIFYICONDATA _icon_data = nullptr;
 
+			// Has the notification area icon been added?
+			bool _isAdded = false;
+
 			// Add the icon to the notification area
-			bool Add();
+			bool AddOrModify();
+
+			// Update the properties of the notification icon
+			bool Modify();
 
 			// Remove the icon from the notification area
 			bool Delete();
 
 			// Set the focus to the notification icon
 			bool SetFocus();
-
-			// Update the properties of the notification icon
-			bool Modify();
 
 			// Set the version flag
 			bool SetVersion();
