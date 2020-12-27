@@ -3,6 +3,8 @@
 
 using namespace NotifyIcon::Win32;
 
+ProxyEventHandlerMethod MessageListenerWindow::_eventHandlerMethod = nullptr;
+
 // Constructor
 MessageListenerWindow::MessageListenerWindow()
 {
@@ -70,28 +72,35 @@ LRESULT CALLBACK MessageListenerWindow::OnMessageReceived(HWND hwnd, UINT uMsg, 
 		switch (LOWORD(lParam))
 		{
 			case WM_LBUTTONDOWN:
-
 				break;
 			case WM_LBUTTONUP:
+				PassEventToHandler(LeftButtonSingleClick);
 				break;
 			case WM_LBUTTONDBLCLK:
+				PassEventToHandler(LeftButtonDoubleClick);
 				break;
 			case WM_RBUTTONDOWN:
 				break;
 			case WM_RBUTTONUP:
+				PassEventToHandler(RightButtonSingleClick);
 				break;
 			case WM_RBUTTONDBLCLK:
+				PassEventToHandler(RightButtonDoubleClick);
 				break;
 			case WM_MBUTTONDOWN:
 				break;
 			case WM_MBUTTONUP:
+				PassEventToHandler(MiddleButtonSingleClick);
 				break;
 			case WM_MBUTTONDBLCLK:
+				PassEventToHandler(MiddleButtonDoubleClick);
 				break;
 			case NIN_SELECT:
+				PassEventToHandler(Select);
 				break;
 			case NIN_KEYSELECT:
-				break;		
+				PassEventToHandler(Select);
+				break;
 		}
 		break;
 
@@ -113,6 +122,15 @@ HWND MessageListenerWindow::GetWindow()
 void MessageListenerWindow::SetEventHandlerCallback(ProxyEventHandlerMethod eventHandlerMethod)
 {
 	_eventHandlerMethod = eventHandlerMethod;
+}
+
+// Pass a message on to the event handler, if any
+void MessageListenerWindow::PassEventToHandler(EventType eventType)
+{
+	if (_eventHandlerMethod != nullptr)
+	{
+		_eventHandlerMethod(eventType);
+	}
 }
 
 // Destructor

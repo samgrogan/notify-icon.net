@@ -51,21 +51,21 @@ void NotificationAreaIcon::HideIcon()
 // Add the icon to the notification area
 bool NotificationAreaIcon::AddOrModify()
 {
-	if (!_isAdded)
+	if (!_is_added)
 	{
-		_isAdded = Shell_NotifyIcon(NIM_ADD, _icon_data);
+		_is_added = Shell_NotifyIcon(NIM_ADD, _icon_data);
 	}
 	else
 	{
 		return Modify();
 	}
-	return _isAdded;
+	return _is_added;
 }
 
 // Update the properties of the notification icon
 bool NotificationAreaIcon::Modify()
 {
-	if (_isAdded)
+	if (_is_added)
 	{
 		return Shell_NotifyIcon(NIM_MODIFY, _icon_data);
 	}
@@ -75,12 +75,12 @@ bool NotificationAreaIcon::Modify()
 // Remove the icon from the notification area
 bool NotificationAreaIcon::Delete()
 {
-	if (_isAdded)
+	if (_is_added)
 	{
-		_isAdded = !Shell_NotifyIcon(NIM_DELETE, _icon_data);
+		_is_added = !Shell_NotifyIcon(NIM_DELETE, _icon_data);
 	}
 
-	return !_isAdded;
+	return !_is_added;
 }
 
 // Set the version flag
@@ -189,15 +189,15 @@ void NotificationAreaIcon::InitializeIconData(Guid^ ItemGuid)
 // Initialize the proxy event handler
 void NotificationAreaIcon::InitializeProxyEventHandler()
 {
-	if (_message_listener != nullptr)
+	if (_message_listener != nullptr && _managed_delegate == nullptr)
 	{
 		// Create the delegate to the managed method
-		ProxyEventHandlerDelegate^ managedDelegate = gcnew ProxyEventHandlerDelegate(this, &NotificationAreaIcon::ProxyEventHandler);
+		_managed_delegate = gcnew ProxyEventHandlerDelegate(this, &NotificationAreaIcon::ProxyEventHandler);
 
 		// Get a pointer to the delegate
-		IntPtr managedPointer = Marshal::GetFunctionPointerForDelegate(managedDelegate);
+		IntPtr managedPointer = Marshal::GetFunctionPointerForDelegate(_managed_delegate);
 
 		// Pass the pointer to the listener
-
+		_message_listener->SetEventHandlerCallback(static_cast<ProxyEventHandlerMethod>(managedPointer.ToPointer()));
 	}
 }

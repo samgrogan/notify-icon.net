@@ -24,6 +24,9 @@ namespace NotifyIcon {
 			// The window that is used to receive events from the notification icon
 			MessageListenerWindow* _message_listener = nullptr;
 
+			// Delegate to the managed method to call when an even occurs;
+			ProxyEventHandlerDelegate^ _managed_delegate = nullptr;
+
 			// The icon to display in the notification area
 			HICON _icon = nullptr;
 
@@ -31,7 +34,7 @@ namespace NotifyIcon {
 			PNOTIFYICONDATA _icon_data = nullptr;
 
 			// Has the notification area icon been added?
-			bool _isAdded = false;
+			bool _is_added = false;
 
 			// Add the icon to the notification area
 			bool AddOrModify();
@@ -54,6 +57,10 @@ namespace NotifyIcon {
 			// Initialize the proxy event handler
 			void InitializeProxyEventHandler();
 
+			// Proxy events from the listener to the delegate
+			void ProxyEventHandler(EventType eventType);
+
+
 		public:
 			// Properties
 			// The tooltip to display when the cursor if over the notification icon
@@ -73,9 +80,6 @@ namespace NotifyIcon {
 
 			// Hide the notification area icon
 			void HideIcon();
-
-			// Proxy events from the listener to the delegate
-			void ProxyEventHandler(EventType eventType);
 
 			// Destructor
 			~NotificationAreaIcon();

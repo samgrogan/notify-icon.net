@@ -87,6 +87,7 @@ namespace NotifyIcon.Wpf
                 ToolTip = this.ToolTip?.ToString(),
                 Icon = this._icon?.Handle
             };
+            _notifyIcon.NotificationIconEventHandler += OnNotificationIconEvent;
 
             // Show the icon
             _notifyIcon.ShowIcon();
@@ -106,6 +107,11 @@ namespace NotifyIcon.Wpf
         public static void PropertyChangedEventHandler(object sender, PropertyChangedEventArgs e)
         {
             Debug.Write(e.PropertyName);
+        }
+
+        public void OnNotificationIconEvent(object sender, NotifyIconEventArgs e)
+        {
+            Debug.Write(e.Type);
         }
 
         #endregion Internal Methods
