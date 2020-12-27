@@ -5,11 +5,17 @@
 #pragma comment(lib, "user32.lib")
 #pragma comment(lib, "kernel32.lib")
 
+#include "NotificationAreaIconEvent.h"
+
+using namespace System;
+
 namespace NotifyIcon {
 	namespace Win32 {
 
 		// The id of the callback message from the notify icon
 		const UINT CALLBACK_MESSAGE_ID = WM_APP + 1;
+
+		typedef void (*ProxyEventHandlerMethod)(EventType eventType);
 
 		class MessageListenerWindow
 		{
@@ -26,6 +32,9 @@ namespace NotifyIcon {
 			// The window handle
 			HWND _window = nullptr;
 
+			// The function to call when an event occurs in the notification icon area
+			ProxyEventHandlerMethod _eventHandlerMethod = nullptr;
+
 			// Register the window class, if needed
 			bool RegisterWindowClass();
 
@@ -34,6 +43,8 @@ namespace NotifyIcon {
 
 		public:
 			// Properties
+			// Set the function to call when an even occurs in the notification icon area
+			void SetEventHandlerCallback(ProxyEventHandlerMethod eventHandlerMethod);
 
 			// The handle to the window
 			HWND GetWindow();

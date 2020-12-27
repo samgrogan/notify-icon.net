@@ -1,5 +1,6 @@
 #include "NotificationAreaIcon.h"
 
+using namespace System::Runtime::InteropServices;
 using namespace NotifyIcon::Win32;
 
 // Constructor
@@ -12,6 +13,9 @@ NotificationAreaIcon::NotificationAreaIcon(Guid^ ItemGuid)
 		Error^ error = gcnew Error();
 		error->ThrowAsException();
 	}
+
+	// Attach the event handler proxy
+	InitializeProxyEventHandler();
 
 	// Initialize the data for the tray icon
 	InitializeIconData(ItemGuid);
@@ -91,6 +95,16 @@ bool NotificationAreaIcon::SetFocus()
 	return Shell_NotifyIcon(NIM_SETFOCUS, _icon_data);;
 }
 
+// Proxy events from the listener to the delegate
+void NotificationAreaIcon::ProxyEventHandler(EventType eventType)
+{
+	NotifyIconEventArgs^ eventArgs = gcnew NotifyIconEventArgs();
+	eventArgs->Type = eventType;
+
+	// Pass the event on to the registered handler(s)
+	NotificationIconEventHandler(this, eventArgs);
+}
+
 // Destructor
 NotificationAreaIcon::~NotificationAreaIcon()
 {
@@ -168,5 +182,22 @@ void NotificationAreaIcon::InitializeIconData(Guid^ ItemGuid)
 	_icon_data->dwState = NIS_HIDDEN;
 	_icon_data->dwStateMask = NIS_HIDDEN;
 
+	// Configure the flags for the data to pass to the notify function
 	_icon_data->uFlags = NIF_MESSAGE | NIF_STATE | NIF_GUID | NIF_SHOWTIP;
+}
+
+// Initialize the proxy event handler
+void NotificationAreaIcon::InitializeProxyEventHandler()
+{
+	if (_message_listener != nullptr)
+	{
+		// Create the delegate to the managed method
+		ProxyEventHandlerDelegate^ managedDelegate = gcnew ProxyEventHandlerDelegate(this, &NotificationAreaIcon::ProxyEventHandler);
+
+		// Get a pointer to the delegate
+		IntPtr managedPointer = Marshal::GetFunctionPointerForDelegate(managedDelegate);
+
+		// Pass the pointer to the listener
+
+	}
 }

@@ -9,17 +9,18 @@
 
 #include "Error.h"
 #include "MessageListenerWindow.h"
+#include "NotificationAreaIconEvent.h"
 
 using namespace System;
 
 namespace NotifyIcon {
 	namespace Win32 {
-
-		private delegate void NotifyIconEvenHandler();
-
 		public ref class NotificationAreaIcon
 		{
 		private:
+			// Delegate type for the callback from unmanaged to managed code
+			delegate void ProxyEventHandlerDelegate(EventType eventType);
+
 			// The window that is used to receive events from the notification icon
 			MessageListenerWindow* _message_listener = nullptr;
 
@@ -50,6 +51,9 @@ namespace NotifyIcon {
 			// Initialize the icon data structure
 			void InitializeIconData(Guid^ ItemGuid);
 
+			// Initialize the proxy event handler
+			void InitializeProxyEventHandler();
+
 		public:
 			// Properties
 			// The tooltip to display when the cursor if over the notification icon
@@ -58,8 +62,8 @@ namespace NotifyIcon {
 			// The icon to display in the notification area
 			property IntPtr^ Icon { void set(IntPtr^ icon); }
 
-			// Function to call when an even occurs in the notify icon
-
+			// Function to call when an event occurs in the notify icon
+			event NotifyIconEventHandler^ NotificationIconEventHandler;
 
 			// Constructor
 			NotificationAreaIcon(Guid^ ItemGuid);
@@ -69,6 +73,9 @@ namespace NotifyIcon {
 
 			// Hide the notification area icon
 			void HideIcon();
+
+			// Proxy events from the listener to the delegate
+			void ProxyEventHandler(EventType eventType);
 
 			// Destructor
 			~NotificationAreaIcon();

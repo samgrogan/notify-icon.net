@@ -109,6 +109,12 @@ HWND MessageListenerWindow::GetWindow()
 	return _window;
 }
 
+// Set the function to call when an even occurs in the notification icon area
+void MessageListenerWindow::SetEventHandlerCallback(ProxyEventHandlerMethod eventHandlerMethod)
+{
+	_eventHandlerMethod = eventHandlerMethod;
+}
+
 // Destructor
 MessageListenerWindow::~MessageListenerWindow()
 {
