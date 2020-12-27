@@ -70,6 +70,7 @@ LRESULT CALLBACK MessageListenerWindow::OnMessageReceived(HWND hwnd, UINT uMsg, 
 		switch (LOWORD(lParam))
 		{
 			case WM_LBUTTONDOWN:
+
 				break;
 			case WM_LBUTTONUP:
 				break;

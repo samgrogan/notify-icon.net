@@ -126,6 +126,7 @@
     <ClInclude Include="Error.h" />
     <ClInclude Include="NotificationAreaIcon.h" />
     <ClInclude Include="MessageListenerWindow.h" />
+    <ClInclude Include="NotificationAreaIconEvent.h" />
     <ClInclude Include="Resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +134,7 @@
     <ClCompile Include="Error.cpp" />
     <ClCompile Include="NotificationAreaIcon.cpp" />
     <ClCompile Include="MessageListenerWindow.cpp" />
+    <ClCompile Include="NotificationAreaIconEvent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="app.rc" />

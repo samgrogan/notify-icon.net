@@ -15,6 +15,8 @@ using namespace System;
 namespace NotifyIcon {
 	namespace Win32 {
 
+		private delegate void NotifyIconEvenHandler();
+
 		public ref class NotificationAreaIcon
 		{
 		private:
@@ -55,6 +57,9 @@ namespace NotifyIcon {
 
 			// The icon to display in the notification area
 			property IntPtr^ Icon { void set(IntPtr^ icon); }
+
+			// Function to call when an even occurs in the notify icon
+
 
 			// Constructor
 			NotificationAreaIcon(Guid^ ItemGuid);
