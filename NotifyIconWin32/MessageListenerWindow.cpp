@@ -3,8 +3,6 @@
 
 using namespace NotifyIcon::Win32;
 
-ProxyEventHandlerMethod MessageListenerWindow::_eventHandlerMethod = nullptr;
-
 // Constructor
 MessageListenerWindow::MessageListenerWindow()
 {
@@ -57,7 +55,8 @@ bool MessageListenerWindow::CreateListenerWindow()
 		_taskbar_created_message_id = RegisterWindowMessage(L"TaskbarCreated");
 
 		// Create the window
-		_window = CreateWindowEx(0, MAKEINTATOM(_window_class), L"", 0, 0, 0, 1, 1, HWND_MESSAGE, nullptr, _app_instance, nullptr);
+		// Pass a pointer to the class instance so that the static window function can communicate back to the instance
+		_window = CreateWindowEx(0, MAKEINTATOM(_window_class), L"", 0, 0, 0, 1, 1, HWND_MESSAGE, nullptr, _app_instance, reinterpret_cast<LPVOID>(this));
 	}
 
 	return (_window != nullptr);
@@ -66,50 +65,69 @@ bool MessageListenerWindow::CreateListenerWindow()
 // Called when a message is received by the window
 LRESULT CALLBACK MessageListenerWindow::OnMessageReceived(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	switch (uMsg)
+	// Get or set the pointer to "this" (the instance for the current message)
+	// See: https://docs.microsoft.com/en-us/windows/win32/learnwin32/managing-application-state-?redirectedfrom=MSDN
+
+	MessageListenerWindow* ptr_this = nullptr;
+	if (uMsg == WM_NCCREATE)
 	{
-	case CALLBACK_MESSAGE_ID:
-		switch (LOWORD(lParam))
+		LPCREATESTRUCT create_struct = reinterpret_cast<LPCREATESTRUCT>(lParam);
+		if (create_struct != nullptr)
 		{
+			ptr_this = reinterpret_cast<MessageListenerWindow*>(create_struct->lpCreateParams);
+			SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(ptr_this));
+		}
+	}
+	else
+	{
+		ptr_this = reinterpret_cast<MessageListenerWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+	}
+
+	// If we got a pointer to the owning instance, pass on the events
+	if (ptr_this != nullptr)
+	{
+		switch (uMsg)
+		{
+		case CALLBACK_MESSAGE_ID:
+			switch (LOWORD(lParam))
+			{
 			case WM_LBUTTONDOWN:
 				break;
 			case WM_LBUTTONUP:
-				PassEventToHandler(LeftButtonSingleClick);
+				ptr_this->PassEventToHandler(LeftButtonSingleClick);
 				break;
 			case WM_LBUTTONDBLCLK:
-				PassEventToHandler(LeftButtonDoubleClick);
+				ptr_this->PassEventToHandler(LeftButtonDoubleClick);
 				break;
 			case WM_RBUTTONDOWN:
 				break;
 			case WM_RBUTTONUP:
-				PassEventToHandler(RightButtonSingleClick);
+				ptr_this->PassEventToHandler(RightButtonSingleClick);
 				break;
 			case WM_RBUTTONDBLCLK:
-				PassEventToHandler(RightButtonDoubleClick);
+				ptr_this->PassEventToHandler(RightButtonDoubleClick);
 				break;
 			case WM_MBUTTONDOWN:
 				break;
 			case WM_MBUTTONUP:
-				PassEventToHandler(MiddleButtonSingleClick);
+				ptr_this->PassEventToHandler(MiddleButtonSingleClick);
 				break;
 			case WM_MBUTTONDBLCLK:
-				PassEventToHandler(MiddleButtonDoubleClick);
+				ptr_this->PassEventToHandler(MiddleButtonDoubleClick);
 				break;
 			case NIN_SELECT:
-				PassEventToHandler(Select);
+				ptr_this->PassEventToHandler(Select);
 				break;
 			case NIN_KEYSELECT:
-				PassEventToHandler(Select);
+				ptr_this->PassEventToHandler(Select);
 				break;
+			}
+			break;
 		}
-		break;
-
-	default:
-		// Finally pass the message to the default window procedure
-		return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
 
-	return 0;
+	// Finally pass the message to the default window procedure
+	return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
 
 // The handle to the window

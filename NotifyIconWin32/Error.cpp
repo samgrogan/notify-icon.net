@@ -34,7 +34,7 @@ String^ Error::GetErrorMessage()
 		0, nullptr);
 
 	// Convert to a string
-	String^ error_message = gcnew String(static_cast<wchar_t*>(format_message_buffer));
+	String^ error_message = gcnew String(reinterpret_cast<wchar_t*>(format_message_buffer));
 	LocalFree(format_message_buffer);
 
 	return error_message;

@@ -33,7 +33,7 @@ namespace NotifyIcon {
 			HWND _window = nullptr;
 
 			// The function to call when an event occurs in the notification icon area
-			static ProxyEventHandlerMethod _eventHandlerMethod;
+			ProxyEventHandlerMethod _eventHandlerMethod = nullptr;
 
 			// Register the window class, if needed
 			bool RegisterWindowClass();
@@ -42,12 +42,12 @@ namespace NotifyIcon {
 			static LRESULT CALLBACK OnMessageReceived(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 			// Pass a message on to the event handler, if any
-			static void PassEventToHandler(EventType eventType);
+			void PassEventToHandler(EventType eventType);
 
 		public:
 			// Properties
 			// Set the function to call when an even occurs in the notification icon area
-			static void SetEventHandlerCallback(ProxyEventHandlerMethod eventHandlerMethod);
+			void SetEventHandlerCallback(ProxyEventHandlerMethod eventHandlerMethod);
 
 			// The handle to the window
 			HWND GetWindow();

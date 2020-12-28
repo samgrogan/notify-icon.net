@@ -141,7 +141,7 @@ void NotificationAreaIcon::ToolTip::set(String^ toolTip)
 // The icon to display in the notification area
 void NotificationAreaIcon::Icon::set(IntPtr^ hicon)
 {
-	_icon = static_cast<HICON>(hicon->ToPointer());
+	_icon = reinterpret_cast<HICON>(hicon->ToPointer());
 	if (_icon_data != nullptr)
 	{
 		_icon_data->hIcon = _icon;
@@ -198,6 +198,6 @@ void NotificationAreaIcon::InitializeProxyEventHandler()
 		IntPtr managedPointer = Marshal::GetFunctionPointerForDelegate(_managed_delegate);
 
 		// Pass the pointer to the listener
-		_message_listener->SetEventHandlerCallback(static_cast<ProxyEventHandlerMethod>(managedPointer.ToPointer()));
+		_message_listener->SetEventHandlerCallback(reinterpret_cast<ProxyEventHandlerMethod>(managedPointer.ToPointer()));
 	}
 }
