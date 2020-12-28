@@ -15,14 +15,14 @@ using namespace System;
 
 namespace NotifyIcon {
 	namespace Win32 {
-		public ref class NotificationAreaIcon
+		public ref class NotificationAreaIcon : IDisposable
 		{
 		private:
 			// Delegate type for the callback from unmanaged to managed code
 			delegate void ProxyEventHandlerDelegate(EventType eventType);
 
 			// The window that is used to receive events from the notification icon
-			MessageListenerWindow* _message_listener = nullptr;
+			MessageListenerWindow^ _message_listener = nullptr;
 
 			// Delegate to the managed method to call when an even occurs;
 			ProxyEventHandlerDelegate^ _managed_delegate = nullptr;

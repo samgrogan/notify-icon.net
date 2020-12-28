@@ -7,7 +7,7 @@ using namespace NotifyIcon::Win32;
 NotificationAreaIcon::NotificationAreaIcon(Guid^ ItemGuid)
 {
 	// Create the listener window
-	_message_listener = new MessageListenerWindow();
+	_message_listener = gcnew MessageListenerWindow();
 	if (!_message_listener->CreateListenerWindow()) 
 	{
 		Error^ error = gcnew Error();
@@ -105,19 +105,7 @@ void NotificationAreaIcon::ProxyEventHandler(EventType eventType)
 	NotificationIconEventHandler(this, eventArgs);
 }
 
-// Destructor
-NotificationAreaIcon::~NotificationAreaIcon()
-{
-	// Delete the icon
-	Delete();
-	
-	// Remove the listener
-	if (_message_listener != nullptr)
-	{
-		delete _message_listener;
-		_message_listener = nullptr;
-	}
-}
+
 
 // The tooltip to display when the cursor if over the notification icon
 void NotificationAreaIcon::ToolTip::set(String^ toolTip)
@@ -199,5 +187,19 @@ void NotificationAreaIcon::InitializeProxyEventHandler()
 
 		// Pass the pointer to the listener
 		_message_listener->SetEventHandlerCallback(reinterpret_cast<ProxyEventHandlerMethod>(managedPointer.ToPointer()));
+	}
+}
+
+// Destructor
+NotificationAreaIcon::~NotificationAreaIcon()
+{
+	// Delete the icon
+	Delete();
+
+	// Remove the listener
+	if (_message_listener != nullptr)
+	{
+		delete _message_listener;
+		_message_listener = nullptr;
 	}
 }

@@ -2,12 +2,15 @@
 
 #include <Windows.h>
 #include <libloaderapi.h>
+#include <string>
+
 #pragma comment(lib, "user32.lib")
 #pragma comment(lib, "kernel32.lib")
 
 #include "NotificationAreaIconEvent.h"
 
 using namespace System;
+using namespace System::Threading;
 
 namespace NotifyIcon {
 	namespace Win32 {
@@ -17,7 +20,18 @@ namespace NotifyIcon {
 
 		typedef void (*ProxyEventHandlerMethod)(EventType eventType);
 
-		class MessageListenerWindow
+		// Called when a message is received by the window
+		static LRESULT CALLBACK OnMessageReceived(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+		ref class MessageListenerWindowLock abstract sealed
+		{
+		private:
+			static Object^ _lock_object = gcnew Object();
+		public:
+			static Object^ GetLockObject();
+		};
+
+		ref class MessageListenerWindow
 		{
 		private:
 			// The id of the message sent when the taskbar restarts
@@ -27,7 +41,11 @@ namespace NotifyIcon {
 			HINSTANCE _app_instance = nullptr;
 
 			// The unique identifier of the window class
-			ATOM _window_class = 0;
+			// Shared between all instances of the class
+			static ATOM _window_class = 0;
+
+			// How many windows are using the window clas
+			static int _window_class_count = 0;
 
 			// The window handle
 			HWND _window = nullptr;
@@ -37,12 +55,6 @@ namespace NotifyIcon {
 
 			// Register the window class, if needed
 			bool RegisterWindowClass();
-
-			// Called when a message is received by the window
-			static LRESULT CALLBACK OnMessageReceived(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-
-			// Pass a message on to the event handler, if any
-			void PassEventToHandler(EventType eventType);
 
 		public:
 			// Properties
