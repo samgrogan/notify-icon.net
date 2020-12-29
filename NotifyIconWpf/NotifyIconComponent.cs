@@ -2,9 +2,9 @@ using System;
 using System.Windows;
 using System.Windows.Media;
 using System.ComponentModel;
-using NotifyIcon.Win32;
 using System.Diagnostics;
 using System.Drawing;
+using NotifyIcon.Win32;
 
 namespace NotifyIcon.Wpf
 {
@@ -33,16 +33,16 @@ namespace NotifyIcon.Wpf
         // What event(s) should show the context menu for the icon
         public static readonly DependencyProperty MenuActivationProperty = DependencyProperty.Register(
             nameof(MenuActivation),
-            typeof(NotifyIconEventType),
+            typeof(EventType),
             typeof(NotifyIconComponent),
-                new FrameworkPropertyMetadata(NotifyIconEventType.SingleClick)
+                new FrameworkPropertyMetadata(EventType.SingleClick)
         );
 
         [Category(CategoryName)]
         [Description("Sets the source of the notification tray icon.")]
-        public NotifyIconEventType MenuActivation
+        public EventType MenuActivation
         {
-            get => (NotifyIconEventType)GetValue(MenuActivationProperty);
+            get => (EventType)GetValue(MenuActivationProperty);
             set => SetValue(MenuActivationProperty, value);
         }
 

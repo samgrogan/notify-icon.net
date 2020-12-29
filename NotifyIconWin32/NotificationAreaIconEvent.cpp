@@ -2,12 +2,12 @@
 
 using namespace NotifyIcon::Win32;
 
-NotifyIconEventType NotifyIconEventArgs::Type::get()
+EventType NotifyIconEventArgs::Type::get()
 {
 	return _type;
 }
 
-void NotifyIconEventArgs::Type::set(NotifyIconEventType type)
+void NotifyIconEventArgs::Type::set(EventType type)
 {
 	_type = type;
 }

@@ -2,11 +2,12 @@
 
 using namespace NotifyIcon::Win32;
 
+// The unique identifier of the window class
+// Shared between all instances of the class
+ATOM MessageListenerWindow::_window_class = 0;
 
-Object^ MessageListenerWindowLock::GetLockObject()
-{
-	return _lock_object;
-}
+// How many windows are using the window clas
+int MessageListenerWindow::_window_class_count = 0;
 
 // Constructor
 MessageListenerWindow::MessageListenerWindow()
@@ -34,26 +35,17 @@ bool MessageListenerWindow::RegisterWindowClass()
 
 	// Register the window class, if it isn't already registered
 	// if (!GetClassInfoEx(app_instance, MAKEINTATOM(_window_class.load()), &wndclass))
-	bool result = true;
-	Monitor::Enter(MessageListenerWindowLock::GetLockObject());
-	try {
+	if (_window_class == 0)
+	{
+		_window_class = RegisterClassEx(&wndclass);
 		if (_window_class == 0)
 		{
-			_window_class = RegisterClassEx(&wndclass);
-			if (_window_class == 0)
-			{
-				result = false;
-			}
+			return false;
 		}
 	}
-	finally
-	{
-		Monitor::Exit(MessageListenerWindowLock::GetLockObject());
-	}
 
-	return result;
+	return true;
 }
-
 
 // Create the window to listen for events
 bool MessageListenerWindow::CreateListenerWindow()
@@ -70,10 +62,10 @@ bool MessageListenerWindow::CreateListenerWindow()
 
 		// Create the window
 		// Pass a pointer to the class instance so that the static window function can communicate back to the instance
-		_window = CreateWindowEx(0, MAKEINTATOM(_window_class), L"", 0, 0, 0, 1, 1, HWND_MESSAGE, nullptr, _app_instance, reinterpret_cast<LPVOID>(_eventHandlerMethod));
+		_window = CreateWindowEx(0, MAKEINTATOM(_window_class), L"", 0, 0, 0, 1, 1, HWND_MESSAGE, nullptr, _app_instance, reinterpret_cast<LPVOID>(this));
 		if (_window != nullptr)
 		{
-			_window_class_count++;
+		_window_class_count++;
 		}
 	}
 
@@ -86,23 +78,23 @@ LRESULT CALLBACK NotifyIcon::Win32::OnMessageReceived(HWND hwnd, UINT uMsg, WPAR
 	// Get or set the pointer to "this" (the instance for the current message)
 	// See: https://docs.microsoft.com/en-us/windows/win32/learnwin32/managing-application-state-?redirectedfrom=MSDN
 
-	ProxyEventHandlerMethod ptr_handler = nullptr;
+	MessageListenerWindow* ptr_this = nullptr;
 	if (uMsg == WM_NCCREATE)
 	{
 		LPCREATESTRUCT create_struct = reinterpret_cast<LPCREATESTRUCT>(lParam);
 		if (create_struct != nullptr)
 		{
-			ptr_handler = reinterpret_cast<ProxyEventHandlerMethod>(create_struct->lpCreateParams);
-			SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(ptr_handler));
+			ptr_this = reinterpret_cast<MessageListenerWindow*>(create_struct->lpCreateParams);
+			SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(ptr_this));
 		}
 	}
 	else
 	{
-		ptr_handler = reinterpret_cast<ProxyEventHandlerMethod>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+		ptr_this = reinterpret_cast<MessageListenerWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 	}
 
 	// If we got a pointer to the owning instance, pass on the events
-	if (ptr_handler != nullptr)
+	if (ptr_this != nullptr)
 	{
 		switch (uMsg)
 		{
@@ -112,32 +104,32 @@ LRESULT CALLBACK NotifyIcon::Win32::OnMessageReceived(HWND hwnd, UINT uMsg, WPAR
 			case WM_LBUTTONDOWN:
 				break;
 			case WM_LBUTTONUP:
-				ptr_handler(NotifyIconEventType::LeftButtonSingleClick);
+				ptr_this->PassWindowEventToHandler(EventType::LeftButtonSingleClick);
 				break;
 			case WM_LBUTTONDBLCLK:
-				ptr_handler(NotifyIconEventType::LeftButtonDoubleClick);
+				ptr_this->PassWindowEventToHandler(EventType::LeftButtonDoubleClick);
 				break;
 			case WM_RBUTTONDOWN:
 				break;
 			case WM_RBUTTONUP:
-				ptr_handler(NotifyIconEventType::RightButtonSingleClick);
+				ptr_this->PassWindowEventToHandler(EventType::RightButtonSingleClick);
 				break;
 			case WM_RBUTTONDBLCLK:
-				ptr_handler(NotifyIconEventType::RightButtonDoubleClick);
+				ptr_this->PassWindowEventToHandler(EventType::RightButtonDoubleClick);
 				break;
 			case WM_MBUTTONDOWN:
 				break;
 			case WM_MBUTTONUP:
-				ptr_handler(NotifyIconEventType::MiddleButtonSingleClick);
+				ptr_this->PassWindowEventToHandler(EventType::MiddleButtonSingleClick);
 				break;
 			case WM_MBUTTONDBLCLK:
-				ptr_handler(NotifyIconEventType::MiddleButtonDoubleClick);
+				ptr_this->PassWindowEventToHandler(EventType::MiddleButtonDoubleClick);
 				break;
 			case NIN_SELECT:
-				ptr_handler(NotifyIconEventType::Select);
+				ptr_this->PassWindowEventToHandler(EventType::Select);
 				break;
 			case NIN_KEYSELECT:
-				ptr_handler(NotifyIconEventType::Select);
+				ptr_this->PassWindowEventToHandler(EventType::Select);
 				break;
 			}
 			break;
@@ -157,7 +149,24 @@ HWND MessageListenerWindow::GetWindow()
 // Set the function to call when an even occurs in the notification icon area
 void MessageListenerWindow::SetEventHandlerCallback(ProxyEventHandlerMethod eventHandlerMethod)
 {
-	_eventHandlerMethod = eventHandlerMethod;
+	if (_window == nullptr)
+	{
+		_eventHandlerMethod = eventHandlerMethod;
+	}
+	else
+	{
+		// Can't change the event handler after the window is created
+		throw gcnew System::Exception("Can't set Notify Icon Listener Window event handler after window is created.");
+	}
+}
+
+// Called to pass an event on to the handler, if registered
+void MessageListenerWindow::PassWindowEventToHandler(EventType eventType)
+{
+	if (_eventHandlerMethod != nullptr)
+	{
+		_eventHandlerMethod(eventType);
+	}
 }
 
 // Destructor

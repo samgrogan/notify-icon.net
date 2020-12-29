@@ -9,6 +9,7 @@
 
 #include "Error.h"
 #include "MessageListenerWindow.h"
+#include "MessageListenerWindowLock.h"
 #include "NotificationAreaIconEvent.h"
 
 using namespace System;
@@ -19,10 +20,10 @@ namespace NotifyIcon {
 		{
 		private:
 			// Delegate type for the callback from unmanaged to managed code
-			delegate void ProxyEventHandlerDelegate(NotifyIconEventType eventType);
+			delegate void ProxyEventHandlerDelegate(EventType eventType);
 
 			// The window that is used to receive events from the notification icon
-			MessageListenerWindow^ _message_listener = nullptr;
+			MessageListenerWindow* _message_listener = nullptr;
 
 			// Delegate to the managed method to call when an even occurs;
 			ProxyEventHandlerDelegate^ _managed_delegate = nullptr;
@@ -51,14 +52,17 @@ namespace NotifyIcon {
 			// Set the version flag
 			bool SetVersion();
 
-			// Initialize the icon data structure
-			void InitializeIconData(Guid^ ItemGuid);
+			// Initialize the message listener window
+			void InitializeListenerWindow();
 
 			// Initialize the proxy event handler
 			void InitializeProxyEventHandler();
 
+			// Initialize the icon data structure
+			void InitializeIconData(Guid^ ItemGuid);
+
 			// Proxy events from the listener to the delegate
-			void ProxyEventHandler(NotifyIconEventType eventType);
+			void ProxyEventHandler(EventType eventType);
 
 
 		public:

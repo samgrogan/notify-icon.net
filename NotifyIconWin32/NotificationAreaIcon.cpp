@@ -6,16 +6,8 @@ using namespace NotifyIcon::Win32;
 // Constructor
 NotificationAreaIcon::NotificationAreaIcon(Guid^ ItemGuid)
 {
-	// Create the listener window
-	_message_listener = gcnew MessageListenerWindow();
-	if (!_message_listener->CreateListenerWindow()) 
-	{
-		Error^ error = gcnew Error();
-		error->ThrowAsException();
-	}
-
-	// Attach the event handler proxy
-	InitializeProxyEventHandler();
+	// Create and initialize the listener window to capture events
+	InitializeListenerWindow();
 
 	// Initialize the data for the tray icon
 	InitializeIconData(ItemGuid);
@@ -96,7 +88,7 @@ bool NotificationAreaIcon::SetFocus()
 }
 
 // Proxy events from the listener to the delegate
-void NotificationAreaIcon::ProxyEventHandler(NotifyIconEventType eventType)
+void NotificationAreaIcon::ProxyEventHandler(EventType eventType)
 {
 	NotifyIconEventArgs^ eventArgs = gcnew NotifyIconEventArgs();
 	eventArgs->Type = eventType;
@@ -104,8 +96,6 @@ void NotificationAreaIcon::ProxyEventHandler(NotifyIconEventType eventType)
 	// Pass the event on to the registered handler(s)
 	NotificationIconEventHandler(this, eventArgs);
 }
-
-
 
 // The tooltip to display when the cursor if over the notification icon
 void NotificationAreaIcon::ToolTip::set(String^ toolTip)
@@ -140,6 +130,50 @@ void NotificationAreaIcon::Icon::set(IntPtr^ hicon)
 	}
 }
 
+// Initialize the message listener window
+void NotificationAreaIcon::InitializeListenerWindow()
+{
+	// Create the listener window
+	_message_listener = new MessageListenerWindow();
+
+	// Attach the event handler proxy
+	InitializeProxyEventHandler();
+
+	// Create the listener window
+	Monitor::Enter(MessageListenerWindowLock::GetLockObject());
+	bool result = false;
+	try {
+		result = _message_listener->CreateListenerWindow();
+	}
+	finally
+	{
+		Monitor::Exit(MessageListenerWindowLock::GetLockObject());
+	}
+
+	if (!result)
+	{
+		Error^ error = gcnew Error();
+		error->ThrowAsException();
+	}
+}
+
+// Initialize the proxy event handler
+void NotificationAreaIcon::InitializeProxyEventHandler()
+{
+	if (_message_listener != nullptr && _managed_delegate == nullptr)
+	{
+		// Create the delegate to the managed method
+		_managed_delegate = gcnew ProxyEventHandlerDelegate(this, &NotificationAreaIcon::ProxyEventHandler);
+
+		// Get a pointer to the delegate
+		IntPtr managedPointer = Marshal::GetFunctionPointerForDelegate(_managed_delegate);
+
+		// Pass the pointer to the listener
+		_message_listener->SetEventHandlerCallback(reinterpret_cast<ProxyEventHandlerMethod>(managedPointer.ToPointer()));
+	}
+}
+
+
 // Initialize the icon data structure
 void NotificationAreaIcon::InitializeIconData(Guid^ ItemGuid)
 {
@@ -172,22 +206,6 @@ void NotificationAreaIcon::InitializeIconData(Guid^ ItemGuid)
 
 	// Configure the flags for the data to pass to the notify function
 	_icon_data->uFlags = NIF_MESSAGE | NIF_STATE | NIF_GUID | NIF_SHOWTIP;
-}
-
-// Initialize the proxy event handler
-void NotificationAreaIcon::InitializeProxyEventHandler()
-{
-	if (_message_listener != nullptr && _managed_delegate == nullptr)
-	{
-		// Create the delegate to the managed method
-		_managed_delegate = gcnew ProxyEventHandlerDelegate(this, &NotificationAreaIcon::ProxyEventHandler);
-
-		// Get a pointer to the delegate
-		IntPtr managedPointer = Marshal::GetFunctionPointerForDelegate(_managed_delegate);
-
-		// Pass the pointer to the listener
-		_message_listener->SetEventHandlerCallback(reinterpret_cast<ProxyEventHandlerMethod>(managedPointer.ToPointer()));
-	}
 }
 
 // Destructor

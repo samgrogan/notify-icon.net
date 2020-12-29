@@ -5,26 +5,26 @@ using namespace System;
 namespace NotifyIcon {
 	namespace Win32 {
 
-		public enum class NotifyIconEventType : UInt32 {
-			Unknown,
-			Any,
-			SingleClick,
-			DoubleClick,
-			Select,
-			LeftButtonSingleClick,
-			LeftButtonDoubleClick,
-			MiddleButtonSingleClick,
-			MiddleButtonDoubleClick,
-			RightButtonSingleClick,
-			RightButtonDoubleClick,
+		public enum EventType : UInt32 {
+			Unknown = 0,
+			Any = 1,
+			SingleClick = 2,
+			DoubleClick = 4,
+			Select = 8,
+			LeftButtonSingleClick = 16,
+			LeftButtonDoubleClick = 32,
+			MiddleButtonSingleClick = 64,
+			MiddleButtonDoubleClick = 128,
+			RightButtonSingleClick = 256,
+			RightButtonDoubleClick = 512,
 		};
 
 		public ref class NotifyIconEventArgs : EventArgs
 		{
 		private:
-			NotifyIconEventType _type = NotifyIconEventType::Unknown;
+			EventType _type = EventType::Unknown;
 		public:
-			property NotifyIconEventType Type { NotifyIconEventType get(); void set(NotifyIconEventType value); }
+			property EventType Type { EventType get(); void set(EventType value); }
 		};
 
 		public delegate void NotifyIconEventHandler(Object^ sender, NotifyIconEventArgs^ e);
