@@ -27,6 +27,26 @@ namespace NotifyIcon.Wpf
 
         #region Properties
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // Menu Activation property
+        // What event(s) should show the context menu for the icon
+        public static readonly DependencyProperty MenuActivationProperty = DependencyProperty.Register(
+            nameof(MenuActivation),
+            typeof(NotifyIconEventType),
+            typeof(NotifyIconComponent),
+                new FrameworkPropertyMetadata(NotifyIconEventType.SingleClick)
+        );
+
+        [Category(CategoryName)]
+        [Description("Sets the source of the notification tray icon.")]
+        public NotifyIconEventType MenuActivation
+        {
+            get => (NotifyIconEventType)GetValue(MenuActivationProperty);
+            set => SetValue(MenuActivationProperty, value);
+        }
+
+
         // Icon property
         // An image source that provides the icon to display in the notification area
         public static readonly DependencyProperty IconProperty = DependencyProperty.Register(
@@ -35,8 +55,6 @@ namespace NotifyIcon.Wpf
             typeof(NotifyIconComponent),
                 new FrameworkPropertyMetadata(null, IconPropertyChanged)
         );
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         [Category(CategoryName)]
         [Description("Sets the source of the notification tray icon.")]
@@ -65,6 +83,11 @@ namespace NotifyIcon.Wpf
 
         public void Dispose()
         {
+            if (_notifyIcon != null)
+            {
+                _notifyIcon.Dispose();
+                _notifyIcon = null;
+            }
         }
 
         #endregion Public Methods

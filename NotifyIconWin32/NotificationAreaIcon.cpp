@@ -96,7 +96,7 @@ bool NotificationAreaIcon::SetFocus()
 }
 
 // Proxy events from the listener to the delegate
-void NotificationAreaIcon::ProxyEventHandler(EventType eventType)
+void NotificationAreaIcon::ProxyEventHandler(NotifyIconEventType eventType)
 {
 	NotifyIconEventArgs^ eventArgs = gcnew NotifyIconEventArgs();
 	eventArgs->Type = eventType;

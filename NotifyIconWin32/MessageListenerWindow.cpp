@@ -112,32 +112,32 @@ LRESULT CALLBACK NotifyIcon::Win32::OnMessageReceived(HWND hwnd, UINT uMsg, WPAR
 			case WM_LBUTTONDOWN:
 				break;
 			case WM_LBUTTONUP:
-				ptr_handler(LeftButtonSingleClick);
+				ptr_handler(NotifyIconEventType::LeftButtonSingleClick);
 				break;
 			case WM_LBUTTONDBLCLK:
-				ptr_handler(LeftButtonDoubleClick);
+				ptr_handler(NotifyIconEventType::LeftButtonDoubleClick);
 				break;
 			case WM_RBUTTONDOWN:
 				break;
 			case WM_RBUTTONUP:
-				ptr_handler(RightButtonSingleClick);
+				ptr_handler(NotifyIconEventType::RightButtonSingleClick);
 				break;
 			case WM_RBUTTONDBLCLK:
-				ptr_handler(RightButtonDoubleClick);
+				ptr_handler(NotifyIconEventType::RightButtonDoubleClick);
 				break;
 			case WM_MBUTTONDOWN:
 				break;
 			case WM_MBUTTONUP:
-				ptr_handler(MiddleButtonSingleClick);
+				ptr_handler(NotifyIconEventType::MiddleButtonSingleClick);
 				break;
 			case WM_MBUTTONDBLCLK:
-				ptr_handler(MiddleButtonDoubleClick);
+				ptr_handler(NotifyIconEventType::MiddleButtonDoubleClick);
 				break;
 			case NIN_SELECT:
-				ptr_handler(Select);
+				ptr_handler(NotifyIconEventType::Select);
 				break;
 			case NIN_KEYSELECT:
-				ptr_handler(Select);
+				ptr_handler(NotifyIconEventType::Select);
 				break;
 			}
 			break;

@@ -19,7 +19,7 @@ namespace NotifyIcon {
 		{
 		private:
 			// Delegate type for the callback from unmanaged to managed code
-			delegate void ProxyEventHandlerDelegate(EventType eventType);
+			delegate void ProxyEventHandlerDelegate(NotifyIconEventType eventType);
 
 			// The window that is used to receive events from the notification icon
 			MessageListenerWindow^ _message_listener = nullptr;
@@ -58,7 +58,7 @@ namespace NotifyIcon {
 			void InitializeProxyEventHandler();
 
 			// Proxy events from the listener to the delegate
-			void ProxyEventHandler(EventType eventType);
+			void ProxyEventHandler(NotifyIconEventType eventType);
 
 
 		public:

@@ -18,7 +18,7 @@ namespace NotifyIcon {
 		// The id of the callback message from the notify icon
 		const UINT CALLBACK_MESSAGE_ID = WM_APP + 1;
 
-		typedef void (*ProxyEventHandlerMethod)(EventType eventType);
+		typedef void (*ProxyEventHandlerMethod)(NotifyIconEventType eventType);
 
 		// Called when a message is received by the window
 		static LRESULT CALLBACK OnMessageReceived(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
