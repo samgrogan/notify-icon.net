@@ -60,7 +60,7 @@ namespace NotifyIcon {
 			bool CreateListenerWindow();
 
 			// Called to pass an event on to the handler, if registered
-			void PassWindowEventToHandler(EventType eventType);
+			void ForwardWindowEventToHandler(EventType eventType);
 
 			// Constructor
 			MessageListenerWindow();

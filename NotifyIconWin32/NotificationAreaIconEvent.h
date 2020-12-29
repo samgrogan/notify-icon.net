@@ -5,6 +5,7 @@ using namespace System;
 namespace NotifyIcon {
 	namespace Win32 {
 
+		// The *unmanaged* version of the enum that describes an event in the notification icon window
 		public enum EventType : UInt32 {
 			Unknown = 0,
 			Any = 1,

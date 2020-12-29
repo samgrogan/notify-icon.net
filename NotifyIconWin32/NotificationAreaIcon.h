@@ -85,6 +85,10 @@ namespace NotifyIcon {
 			// Hide the notification area icon
 			void HideIcon();
 
+			// Set the foreground window to the given window
+			// Used to show the context menu
+			bool SetForegroundWindow(IntPtr hwndWindow);
+
 			// Destructor
 			~NotificationAreaIcon();
 		};

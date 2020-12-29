@@ -2,16 +2,15 @@ using System;
 using System.Windows;
 using System.Windows.Media;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using NotifyIcon.Win32;
+using System.Windows.Controls.Primitives;
+using System.Windows.Interop;
 
 namespace NotifyIcon.Wpf
 {
     public partial class NotifyIconComponent : FrameworkElement, IDisposable, INotifyPropertyChanged
     {
-        private const string CategoryName = "NotifyIconWpf";
-
         #region Members
 
         // The win32 Notification Icon that this class wraps
@@ -25,60 +24,27 @@ namespace NotifyIcon.Wpf
 
         #endregion Members
 
-        #region Properties
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        // Menu Activation property
-        // What event(s) should show the context menu for the icon
-        public static readonly DependencyProperty MenuActivationProperty = DependencyProperty.Register(
-            nameof(MenuActivation),
-            typeof(EventType),
-            typeof(NotifyIconComponent),
-                new FrameworkPropertyMetadata(EventType.SingleClick)
-        );
-
-        [Category(CategoryName)]
-        [Description("Sets the source of the notification tray icon.")]
-        public EventType MenuActivation
-        {
-            get => (EventType)GetValue(MenuActivationProperty);
-            set => SetValue(MenuActivationProperty, value);
-        }
-
-
-        // Icon property
-        // An image source that provides the icon to display in the notification area
-        public static readonly DependencyProperty IconProperty = DependencyProperty.Register(
-            nameof(Icon),
-            typeof(ImageSource),
-            typeof(NotifyIconComponent),
-                new FrameworkPropertyMetadata(null, IconPropertyChanged)
-        );
-
-        [Category(CategoryName)]
-        [Description("Sets the source of the notification tray icon.")]
-        public ImageSource Icon
-        {
-            get => GetValue(IconProperty) as ImageSource;
-            set
-            {
-                SetValue(IconProperty, value);
-                _icon = value?.ToIcon();
-                if (_notifyIcon != null)
-                {
-                    _notifyIcon.Icon = _icon?.Handle;
-                }
-            }
-        }
-
-        #endregion Properties
-
         #region Public Methods
 
         public NotifyIconComponent()
         {
             PropertyChanged = PropertyChangedEventHandler;
+        }
+
+        // Called when a window even occurs in the notification area icon
+        public void OnNotificationIconEvent(object sender, NotifyIconEventArgs e)
+        {
+            // Convert from the Win32 event type to the wpf event type
+            if (e != null)
+            {
+                Wpf.EventType eventType = (Wpf.EventType)e.Type;
+
+                // Forward the event to any commands
+                ForwardEventToCommand(eventType);
+
+                // Handle the content menu
+                HandleCommandMenu(eventType);
+            }
         }
 
         public void Dispose()
@@ -127,14 +93,86 @@ namespace NotifyIcon.Wpf
             Icon = e.NewValue as ImageSource;
         }
 
-        public static void PropertyChangedEventHandler(object sender, PropertyChangedEventArgs e)
+        protected static void PropertyChangedEventHandler(object sender, PropertyChangedEventArgs e)
         {
-            Debug.Write(e.PropertyName);
         }
 
-        public void OnNotificationIconEvent(object sender, NotifyIconEventArgs e)
+
+        // Forward events to any registed commands
+        protected void ForwardEventToCommand(Wpf.EventType eventType)
         {
-            Debug.Write(e.Type);
+            switch (eventType)
+            {
+                case Wpf.EventType.LeftButtonDoubleClick:
+                case Wpf.EventType.MiddleButtonDoubleClick:
+                case Wpf.EventType.RightButtonDoubleClick:
+                    // Handle double click
+                    if (DoubleClickCommand?.CanExecute(DoubleClickCommandParameter) == true)
+                    {
+                        DoubleClickCommand?.Execute(DoubleClickCommandParameter);
+                    }
+                    break;
+            }
+        }
+
+        // Handle the display of the command menu, based on the event type
+        protected void HandleCommandMenu(Wpf.EventType eventType)
+        {
+            if (ContextMenu != null)
+            {
+                // Should we 
+                if (ShouldShowCommandMenu(eventType))
+                {
+                    // Set the position of the menu
+                    ContextMenu.Placement = PlacementMode.AbsolutePoint;
+                    ContextMenu.HorizontalOffset = 0;
+                    ContextMenu.VerticalAlignment = 0;
+                    ContextMenu.IsOpen = true;
+
+                    // Show the window
+                    HwndSource hwndSource = PresentationSource.FromVisual(ContextMenu) as HwndSource;
+                    if (hwndSource != null)
+                    {
+                        _notifyIcon.SetForegroundWindow(hwndSource.Handle);
+                    }
+
+                }
+            }
+        }
+
+        // Should the command menu be shown based on the event type?
+        protected bool ShouldShowCommandMenu(Wpf.EventType eventType)
+        {
+            // Check for single event types
+            if (MenuActivation == eventType)
+            {
+                return true;
+            }
+
+            // Check for compound types
+            switch (MenuActivation)
+            {
+                case Wpf.EventType.Any:
+                    return true;
+                case Wpf.EventType.DoubleClick:
+                    if (eventType == Wpf.EventType.LeftButtonDoubleClick ||
+                        eventType == Wpf.EventType.MiddleButtonDoubleClick ||
+                        eventType == Wpf.EventType.RightButtonDoubleClick)
+                    {
+                        return true;
+                    }
+                    break;
+                case Wpf.EventType.SingleClick:
+                    if (eventType == Wpf.EventType.LeftButtonSingleClick ||
+                        eventType == Wpf.EventType.MiddleButtonSingleClick ||
+                        eventType == Wpf.EventType.RightButtonSingleClick)
+                    {
+                        return true;
+                    }
+                    break;
+            }
+
+            return false;
         }
 
         #endregion Internal Methods

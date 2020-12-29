@@ -39,6 +39,12 @@ void NotificationAreaIcon::HideIcon()
 	SetVersion();
 }
 
+// Set the foreground window to the given window
+// Used to show the context menu
+bool NotificationAreaIcon::SetForegroundWindow(IntPtr hwndWindow)
+{
+	return ::SetForegroundWindow(reinterpret_cast<HWND>(hwndWindow.ToPointer()));
+}
 
 // Add the icon to the notification area
 bool NotificationAreaIcon::AddOrModify()

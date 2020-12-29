@@ -104,32 +104,32 @@ LRESULT CALLBACK NotifyIcon::Win32::OnMessageReceived(HWND hwnd, UINT uMsg, WPAR
 			case WM_LBUTTONDOWN:
 				break;
 			case WM_LBUTTONUP:
-				ptr_this->PassWindowEventToHandler(EventType::LeftButtonSingleClick);
+				ptr_this->ForwardWindowEventToHandler(EventType::LeftButtonSingleClick);
 				break;
 			case WM_LBUTTONDBLCLK:
-				ptr_this->PassWindowEventToHandler(EventType::LeftButtonDoubleClick);
+				ptr_this->ForwardWindowEventToHandler(EventType::LeftButtonDoubleClick);
 				break;
 			case WM_RBUTTONDOWN:
 				break;
 			case WM_RBUTTONUP:
-				ptr_this->PassWindowEventToHandler(EventType::RightButtonSingleClick);
+				ptr_this->ForwardWindowEventToHandler(EventType::RightButtonSingleClick);
 				break;
 			case WM_RBUTTONDBLCLK:
-				ptr_this->PassWindowEventToHandler(EventType::RightButtonDoubleClick);
+				ptr_this->ForwardWindowEventToHandler(EventType::RightButtonDoubleClick);
 				break;
 			case WM_MBUTTONDOWN:
 				break;
 			case WM_MBUTTONUP:
-				ptr_this->PassWindowEventToHandler(EventType::MiddleButtonSingleClick);
+				ptr_this->ForwardWindowEventToHandler(EventType::MiddleButtonSingleClick);
 				break;
 			case WM_MBUTTONDBLCLK:
-				ptr_this->PassWindowEventToHandler(EventType::MiddleButtonDoubleClick);
+				ptr_this->ForwardWindowEventToHandler(EventType::MiddleButtonDoubleClick);
 				break;
 			case NIN_SELECT:
-				ptr_this->PassWindowEventToHandler(EventType::Select);
+				ptr_this->ForwardWindowEventToHandler(EventType::Select);
 				break;
 			case NIN_KEYSELECT:
-				ptr_this->PassWindowEventToHandler(EventType::Select);
+				ptr_this->ForwardWindowEventToHandler(EventType::Select);
 				break;
 			}
 			break;
@@ -161,7 +161,7 @@ void MessageListenerWindow::SetEventHandlerCallback(ProxyEventHandlerMethod even
 }
 
 // Called to pass an event on to the handler, if registered
-void MessageListenerWindow::PassWindowEventToHandler(EventType eventType)
+void MessageListenerWindow::ForwardWindowEventToHandler(EventType eventType)
 {
 	if (_eventHandlerMethod != nullptr)
 	{
