@@ -13,7 +13,7 @@ namespace NotifyIcon.Test
         public const string TEST_ICON = "Resources/Icons/test.ico";
 
         [TestMethod]
-        public void SerialCreateDestroyTest()
+        public void SerialCreateDestroy()
         {
             using (NotificationAreaIcon notificationAreaIcon1 = new NotificationAreaIcon(Guid.NewGuid()))
             {
@@ -44,7 +44,7 @@ namespace NotifyIcon.Test
         }
 
         [TestMethod]
-        public void ParallelCreateDestroyTest()
+        public void ParallelCreateDestroy()
         {
             int runCount = 100;
 
