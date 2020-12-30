@@ -98,6 +98,8 @@ void NotificationAreaIcon::ProxyEventHandler(EventType eventType, int cursorX, i
 {
 	NotifyIconEventArgs^ eventArgs = gcnew NotifyIconEventArgs();
 	eventArgs->Type = eventType;
+	eventArgs->CursorX = cursorX;
+	eventArgs->CursorY = cursorY;
 
 	// Pass the event on to the registered handler(s)
 	NotificationIconEventHandler(this, eventArgs);
