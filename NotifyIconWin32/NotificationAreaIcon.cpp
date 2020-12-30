@@ -111,11 +111,17 @@ void NotificationAreaIcon::ToolTip::set(String^ toolTip)
 	if (_icon_data != nullptr)
 	{
 		if (toolTip == nullptr) {
-			wcsncpy_s(_icon_data->szTip, L"\0", 128);
+			wcscpy_s(_icon_data->szTip, L"\0");
 		}
 		else {
-			pin_ptr<const wchar_t> _device_id_ptr = PtrToStringChars(toolTip);
-			wcsncpy_s(_icon_data->szTip, _device_id_ptr, 128);
+			// Make sure the string isn't too long
+			String^ short_tool_tip = toolTip->Substring(0, min(127, toolTip->Length));
+
+			// Get a pointer to the characters in the managed string
+			pin_ptr<const wchar_t> tool_tip_ptr = PtrToStringChars(short_tool_tip);
+
+			// Copy to the buffer
+			wcscpy_s(_icon_data->szTip, tool_tip_ptr);
 		}
 		_icon_data->uFlags |= NIF_TIP;
 

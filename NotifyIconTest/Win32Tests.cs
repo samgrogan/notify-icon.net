@@ -60,5 +60,47 @@ namespace NotifyIcon.Test
                 }
             });
         }
+
+        [TestMethod]
+        public void IconProperty()
+        {
+            using (NotificationAreaIcon notificationAreaIcon = new NotificationAreaIcon(Guid.NewGuid()))
+            {
+                Icon icon = new Icon(TEST_ICON);
+                notificationAreaIcon.Icon = icon.Handle;
+                notificationAreaIcon.ToolTip = $"This is test";
+                notificationAreaIcon.ShowIcon();
+                Thread.Sleep(500);
+
+                notificationAreaIcon.Icon = null;
+                Thread.Sleep(500);
+
+                icon = new Icon(TEST_ICON);
+                notificationAreaIcon.Icon = null;
+                Thread.Sleep(500);
+            }
+        }
+
+        [TestMethod]
+        public void ToolTipProperty()
+        {
+            using (NotificationAreaIcon notificationAreaIcon = new NotificationAreaIcon(Guid.NewGuid()))
+            {
+                Icon icon = new Icon(TEST_ICON);
+                notificationAreaIcon.Icon = icon.Handle;
+                notificationAreaIcon.ToolTip = $"This is short tooltip";
+                notificationAreaIcon.ShowIcon();
+                Thread.Sleep(500);
+
+                notificationAreaIcon.ToolTip = null;
+                Thread.Sleep(500);
+
+                notificationAreaIcon.ToolTip = String.Empty;
+                Thread.Sleep(500);
+
+                notificationAreaIcon.ToolTip = "This is a really long\nmulti-line tool-tip that is tool long to fit the tool tip property\n. This should be truncated and not cause an error.";
+                Thread.Sleep(500);
+            }
+        }
     }
 }
