@@ -9,7 +9,7 @@ using System.Windows.Interop;
 
 namespace NotifyIcon.Wpf
 {
-    public partial class NotifyIconComponent : FrameworkElement, IDisposable, INotifyPropertyChanged
+    public partial class NotifyIconComponent : FrameworkElement, IDisposable
     {
         #region Members
 
@@ -28,7 +28,8 @@ namespace NotifyIcon.Wpf
 
         public NotifyIconComponent()
         {
-            PropertyChanged = PropertyChangedEventHandler;
+            // Register a listener for the data context property
+            DataContextProperty.OverrideMetadata(typeof(NotifyIconComponent), new FrameworkPropertyMetadata(DataContextPropertyChanged));
         }
 
         // Called when a window even occurs in the notification area icon

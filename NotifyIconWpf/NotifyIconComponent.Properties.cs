@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,11 +11,9 @@ using System.Windows.Media;
 
 namespace NotifyIcon.Wpf
 {
-    public partial class NotifyIconComponent : FrameworkElement, IDisposable, INotifyPropertyChanged
+    public partial class NotifyIconComponent : FrameworkElement, IDisposable
     {
         private const string CategoryName = "NotifyIconWpf";
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         #region MenuActivation property
 
@@ -100,5 +99,24 @@ namespace NotifyIcon.Wpf
         }
 
         #endregion DoubleClickCommand properties
+
+        #region Data Context
+
+        private static void DataContextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            NotifyIconComponent owner = d as NotifyIconComponent;
+            owner?.OnDataContextPropertyChanged(e);
+        }
+
+        private void OnDataContextPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            // Update the data context so that commands are properly routed
+            if (ContextMenu != null)
+            {
+                ContextMenu.DataContext = e.NewValue;
+            }
+        }
+
+        #endregion Data Context
     }
 }
