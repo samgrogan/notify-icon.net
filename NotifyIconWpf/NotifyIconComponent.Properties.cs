@@ -65,6 +65,25 @@ namespace NotifyIcon.Wpf
 
         #endregion Icon property
 
+        #region Tool Tip property
+
+        private static void ToolTipPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            NotifyIconComponent owner = d as NotifyIconComponent;
+            owner?.OnToolTipPropertyChanged(e);
+        }
+
+        private void OnToolTipPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            // Update the icon with the new tooltip
+            if (_notifyIcon != null)
+            { 
+                _notifyIcon.ToolTip = e.NewValue?.ToString();
+            }
+        }
+
+        #endregion Data Context property
+
         #region DoubleClickCommand properties
 
         // DoubleClickCommand property
@@ -100,7 +119,7 @@ namespace NotifyIcon.Wpf
 
         #endregion DoubleClickCommand properties
 
-        #region Data Context
+        #region Data Context property
 
         private static void DataContextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -117,6 +136,6 @@ namespace NotifyIcon.Wpf
             }
         }
 
-        #endregion Data Context
+        #endregion Data Context property
     }
 }

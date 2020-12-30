@@ -28,8 +28,11 @@ namespace NotifyIcon.Wpf
 
         public NotifyIconComponent()
         {
+            // Register a listener for the tool tip property
+            ToolTipProperty.OverrideMetadata(typeof(NotifyIconComponent), new FrameworkPropertyMetadata(ToolTipPropertyChanged));
+
             // Register a listener for the data context property
-            DataContextProperty.OverrideMetadata(typeof(NotifyIconComponent), new FrameworkPropertyMetadata(DataContextPropertyChanged));
+            DataContextProperty.OverrideMetadata(typeof(NotifyIconComponent), new FrameworkPropertyMetadata(DataContextPropertyChanged));     
         }
 
         // Called when a window even occurs in the notification area icon
