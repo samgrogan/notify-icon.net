@@ -120,7 +120,7 @@
   <data name="BlueLabel" xml:space="preserve">
     <value>Blue</value>
   </data>
-  <data name="BlueTool" xml:space="preserve">
+  <data name="BlueToolTip" xml:space="preserve">
     <value>Blue is one of the three primary colours of pigments in painting and traditional colour theory, as well as in the RGB colour model. It lies between violet and green on the spectrum of visible light. The eye perceives blue when observing light with a dominant wavelength between approximately 450 and 495 nanometres.</value>
   </data>
   <data name="ClearColorLabel" xml:space="preserve">

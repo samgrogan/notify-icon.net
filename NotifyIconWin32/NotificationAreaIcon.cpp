@@ -127,14 +127,17 @@ void NotificationAreaIcon::ToolTip::set(String^ toolTip)
 // The icon to display in the notification area
 void NotificationAreaIcon::Icon::set(IntPtr^ hicon)
 {
-	_icon = reinterpret_cast<HICON>(hicon->ToPointer());
-	if (_icon_data != nullptr)
+	if (hicon != nullptr)
 	{
-		_icon_data->hIcon = _icon;
-		_icon_data->uFlags |= NIF_ICON;
+		_icon = reinterpret_cast<HICON>(hicon->ToPointer());
+		if (_icon_data != nullptr)
+		{
+			_icon_data->hIcon = _icon;
+			_icon_data->uFlags |= NIF_ICON;
 
-		// If already visible, update with the changes
-		Modify();
+			// If already visible, update with the changes
+			Modify();
+		}
 	}
 }
 

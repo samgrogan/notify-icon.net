@@ -6,9 +6,20 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
+using NotifyIcon.Wpf;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace NotifyIconSampleApp
 {
+    enum Color
+    {
+        NoColor,
+        Red,
+        Green,
+        Blue
+    }
+
     public class ColorsViewModel
     {
         #region Commands
@@ -16,34 +27,84 @@ namespace NotifyIconSampleApp
         public ICommand RedMenuCommand =>
             new DelegateCommand
             {
-                CommandAction = () => { MessageBox.Show("Red"); }
+                CommandAction = () =>
+                {
+                    SetColor(Color.Red);
+                }
             };
 
         public ICommand GreenMenuCommand =>
             new DelegateCommand
             {
-                CommandAction = () => { MessageBox.Show("Green"); }
+                CommandAction = () =>
+                {
+                    SetColor(Color.Green);
+                }
             };
 
         public ICommand BlueMenuCommand =>
             new DelegateCommand
             {
-                CommandAction = () => { MessageBox.Show("Blue"); }
+                CommandAction = () =>
+                {
+                    SetColor(Color.Blue);
+                }
             };
 
         public ICommand ClearMenuCommand =>
             new DelegateCommand
             {
-                CommandAction = () => { MessageBox.Show("Clear Color"); }
+                CommandAction = () =>
+                {
+                    SetColor(Color.NoColor);
+                }
             };
 
         public ICommand QuitCommand =>
             new DelegateCommand
             {
-                CommandAction = () => { Application.Current.Shutdown(); }
+                CommandAction = () =>
+                {
+                    Application.Current.Shutdown();
+                }
             };
 
         #endregion Commands
 
+        #region Internal Methods
+
+        private void SetColor(Color color)
+        {
+            App app = App.Current as App;
+            NotifyIconComponent notifyIcon = app?.NotifyIcon;
+
+            string toolTip = Resources.Colors.NoColorToolTip;
+            string iconName = "no-color.ico";
+
+            switch (color)
+            {
+                case Color.Red:
+                    toolTip = Resources.Colors.RedToolTip;
+                    iconName = "red.ico";
+                    break;
+                case Color.Green:
+                    toolTip = Resources.Colors.GreenToolTip;
+                    iconName = "green.ico";
+                    break;
+                case Color.Blue:
+                    toolTip = Resources.Colors.BlueToolTip;
+                    iconName = "blue.ico";
+                    break;
+            }
+
+            if (notifyIcon != null)
+            {
+                notifyIcon.ToolTip = toolTip;
+                BitmapImage icon = new BitmapImage(new Uri($"pack://application:,,,/Resources/Icons/{iconName}", UriKind.Absolute)); ;
+                notifyIcon.Icon = icon;
+            }
+        }
+
+        #endregion Internal Methods
     }
 }

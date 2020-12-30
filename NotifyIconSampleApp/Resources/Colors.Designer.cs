@@ -72,9 +72,9 @@ namespace NotifyIconSampleApp.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Blue is one of the three primary colours of pigments in painting and traditional colour theory, as well as in the RGB colour model. It lies between violet and green on the spectrum of visible light. The eye perceives blue when observing light with a dominant wavelength between approximately 450 and 495 nanometres..
         /// </summary>
-        public static string BlueTool {
+        public static string BlueToolTip {
             get {
-                return ResourceManager.GetString("BlueTool", resourceCulture);
+                return ResourceManager.GetString("BlueToolTip", resourceCulture);
             }
         }
         

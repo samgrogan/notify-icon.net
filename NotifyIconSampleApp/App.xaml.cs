@@ -21,6 +21,13 @@ namespace NotifyIconSampleApp
 
         #endregion
 
+        #region Properties
+
+        // Access the notify icon component owned by the application
+        public NotifyIconComponent NotifyIcon => _notifyIconComponent;
+
+        #endregion Properties
+
         #region Internal Methods
 
         protected override void OnStartup(StartupEventArgs e)
