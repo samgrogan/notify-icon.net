@@ -24,8 +24,12 @@ namespace NotifyIcon {
 		{
 		private:
 			EventType _type = EventType::Unknown;
+			int _cursor_x = -1;
+			int _cursor_y = -1;
 		public:
 			property EventType Type { EventType get(); void set(EventType value); }
+			property int CursorX { int get(); void set(int cursorX); }
+			property int CursorY { int get(); void set(int cursorY); }
 		};
 
 		public delegate void NotifyIconEventHandler(Object^ sender, NotifyIconEventArgs^ e);

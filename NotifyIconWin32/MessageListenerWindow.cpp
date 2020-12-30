@@ -65,7 +65,7 @@ bool MessageListenerWindow::CreateListenerWindow()
 		_window = CreateWindowEx(0, MAKEINTATOM(_window_class), L"", 0, 0, 0, 1, 1, HWND_MESSAGE, nullptr, _app_instance, reinterpret_cast<LPVOID>(this));
 		if (_window != nullptr)
 		{
-		_window_class_count++;
+			_window_class_count++;
 		}
 	}
 
@@ -93,51 +93,60 @@ LRESULT CALLBACK NotifyIcon::Win32::OnMessageReceived(HWND hwnd, UINT uMsg, WPAR
 		ptr_this = reinterpret_cast<MessageListenerWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 	}
 
-	// If we got a pointer to the owning instance, pass on the events
-	if (ptr_this != nullptr)
+	// Get the coordinates when the event occured
+	POINT cursor_position = { -1, -1 };
+	GetPhysicalCursorPos(&cursor_position);
+
+	// Pass on the events to the class instance that owns the window
+	switch (uMsg)
 	{
-		switch (uMsg)
+	case CALLBACK_MESSAGE_ID:
+		switch (LOWORD(lParam))
 		{
-		case CALLBACK_MESSAGE_ID:
-			switch (LOWORD(lParam))
-			{
-			case WM_LBUTTONDOWN:
-				break;
-			case WM_LBUTTONUP:
-				ptr_this->ForwardWindowEventToHandler(EventType::LeftButtonSingleClick);
-				break;
-			case WM_LBUTTONDBLCLK:
-				ptr_this->ForwardWindowEventToHandler(EventType::LeftButtonDoubleClick);
-				break;
-			case WM_RBUTTONDOWN:
-				break;
-			case WM_RBUTTONUP:
-				ptr_this->ForwardWindowEventToHandler(EventType::RightButtonSingleClick);
-				break;
-			case WM_RBUTTONDBLCLK:
-				ptr_this->ForwardWindowEventToHandler(EventType::RightButtonDoubleClick);
-				break;
-			case WM_MBUTTONDOWN:
-				break;
-			case WM_MBUTTONUP:
-				ptr_this->ForwardWindowEventToHandler(EventType::MiddleButtonSingleClick);
-				break;
-			case WM_MBUTTONDBLCLK:
-				ptr_this->ForwardWindowEventToHandler(EventType::MiddleButtonDoubleClick);
-				break;
-			case NIN_SELECT:
-				ptr_this->ForwardWindowEventToHandler(EventType::Select);
-				break;
-			case NIN_KEYSELECT:
-				ptr_this->ForwardWindowEventToHandler(EventType::Select);
-				break;
-			}
+		case WM_LBUTTONDOWN:
+			break;
+		case WM_LBUTTONUP:
+			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, EventType::LeftButtonSingleClick, cursor_position);
+			break;
+		case WM_LBUTTONDBLCLK:
+			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, EventType::LeftButtonDoubleClick, cursor_position);
+			break;
+		case WM_RBUTTONDOWN:
+			break;
+		case WM_RBUTTONUP:
+			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, EventType::RightButtonSingleClick, cursor_position);
+			break;
+		case WM_RBUTTONDBLCLK:
+			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, EventType::RightButtonDoubleClick, cursor_position);
+			break;
+		case WM_MBUTTONDOWN:
+			break;
+		case WM_MBUTTONUP:
+			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, EventType::MiddleButtonSingleClick, cursor_position);
+			break;
+		case WM_MBUTTONDBLCLK:
+			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, EventType::MiddleButtonDoubleClick, cursor_position);
+			break;
+		case NIN_SELECT:
+			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, EventType::Select, cursor_position);
+			break;
+		case NIN_KEYSELECT:
+			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, EventType::Select, cursor_position);
 			break;
 		}
+		break;
 	}
 
 	// Finally pass the message to the default window procedure
 	return DefWindowProc(hwnd, uMsg, wParam, lParam);
+}
+
+void MessageListenerWindow::ForwardWindowEventToHandler(MessageListenerWindow* ptrThis, EventType eventType, POINT cursorPosition)
+{
+	if (ptrThis != nullptr)
+	{
+		ptrThis->ForwardWindowEventToHandler(eventType, cursorPosition.x, cursorPosition.y);
+	}
 }
 
 // The handle to the window
@@ -161,11 +170,11 @@ void MessageListenerWindow::SetEventHandlerCallback(ProxyEventHandlerMethod even
 }
 
 // Called to pass an event on to the handler, if registered
-void MessageListenerWindow::ForwardWindowEventToHandler(EventType eventType)
+void MessageListenerWindow::ForwardWindowEventToHandler(EventType eventType, int cursorX, int cursorY)
 {
 	if (_eventHandlerMethod != nullptr)
 	{
-		_eventHandlerMethod(eventType);
+		_eventHandlerMethod(eventType, cursorX, cursorY);
 	}
 }
 

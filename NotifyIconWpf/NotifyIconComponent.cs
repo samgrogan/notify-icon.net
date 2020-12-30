@@ -43,7 +43,7 @@ namespace NotifyIcon.Wpf
                 ForwardEventToCommand(eventType);
 
                 // Handle the content menu
-                HandleCommandMenu(eventType);
+                HandleCommandMenu(eventType, e.CursorX, e.CursorY);
             }
         }
 
@@ -116,7 +116,7 @@ namespace NotifyIcon.Wpf
         }
 
         // Handle the display of the command menu, based on the event type
-        protected void HandleCommandMenu(Wpf.EventType eventType)
+        protected void HandleCommandMenu(Wpf.EventType eventType, int cursorX, int cursorY)
         {
             if (ContextMenu != null)
             {
@@ -125,8 +125,8 @@ namespace NotifyIcon.Wpf
                 {
                     // Set the position of the menu
                     ContextMenu.Placement = PlacementMode.AbsolutePoint;
-                    ContextMenu.HorizontalOffset = 0;
-                    ContextMenu.VerticalAlignment = 0;
+                    ContextMenu.HorizontalOffset = cursorX;
+                    ContextMenu.VerticalOffset = cursorY;
                     ContextMenu.IsOpen = true;
 
                     // Show the window
