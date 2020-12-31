@@ -182,6 +182,9 @@ void NotificationAreaIcon::InitializeProxyEventHandler()
 	{
 		// Create the delegate to the managed method
 		_managed_delegate = gcnew ProxyEventHandlerDelegate(this, &NotificationAreaIcon::ProxyEventHandler);
+		
+		// Protect the delegate from garbage collection
+		_managed_delegate_gchandle = GCHandle::Alloc(_managed_delegate);
 
 		// Get a pointer to the delegate
 		IntPtr managedPointer = Marshal::GetFunctionPointerForDelegate(_managed_delegate);
@@ -237,5 +240,12 @@ NotificationAreaIcon::~NotificationAreaIcon()
 	{
 		delete _message_listener;
 		_message_listener = nullptr;
+	}
+
+	// Free the gc handle
+	if (_managed_delegate_gchandle != nullptr)
+	{
+		_managed_delegate_gchandle->Free();
+		_managed_delegate_gchandle = nullptr;
 	}
 }

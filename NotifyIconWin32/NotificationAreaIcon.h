@@ -13,6 +13,7 @@
 #include "NotificationAreaIconEvent.h"
 
 using namespace System;
+using namespace System::Runtime::InteropServices;
 
 namespace NotifyIcon {
 	namespace Win32 {
@@ -27,6 +28,7 @@ namespace NotifyIcon {
 
 			// Delegate to the managed method to call when an even occurs;
 			ProxyEventHandlerDelegate^ _managed_delegate = nullptr;
+			GCHandle^ _managed_delegate_gchandle = nullptr;
 
 			// The icon to display in the notification area
 			HICON _icon = nullptr;
