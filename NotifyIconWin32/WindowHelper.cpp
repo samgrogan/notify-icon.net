@@ -7,12 +7,12 @@ void WindowHelper::ConvertScreenPointToDeviceIndependent(HWND hwnd, POINT& posit
 	if (hwnd != nullptr)
 	{
 		// Get the DPI for the window
-		UINT windowDpi = GetDpiForWindow(hwnd);
+		const UINT windowDpi = GetDpiForWindow(hwnd);
 		if (windowDpi != 0)
 		{
 			// 96 dpi is equal to 100%
-			position.x = (int)((float)position.x / ((float)windowDpi / 96.0F));
-			position.y = (int)((float)position.y / ((float)windowDpi / 96.0F));
+			position.x = static_cast<int>(static_cast<float>(position.x) / (static_cast<float>(windowDpi) / 96.0F));
+			position.y = static_cast<int>(static_cast<float>(position.y) / (static_cast<float>(windowDpi) / 96.0F));
 		}
 	}
 }

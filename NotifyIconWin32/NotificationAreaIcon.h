@@ -89,7 +89,7 @@ namespace NotifyIcon {
 
 			// Set the foreground window to the given window
 			// Used to show the context menu
-			bool SetForegroundWindow(IntPtr hwndWindow);
+			static bool SetForegroundWindow(IntPtr hwndWindow);
 
 			// Destructor
 			~NotificationAreaIcon();

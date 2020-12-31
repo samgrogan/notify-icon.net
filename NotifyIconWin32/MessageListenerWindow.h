@@ -37,7 +37,7 @@ namespace NotifyIcon {
 			// Shared between all instances of the class
 			static ATOM _window_class;
 
-			// How many windows are using the window clas
+			// How many windows are using the window class
 			static int _window_class_count;
 
 			// The window handle
@@ -47,7 +47,7 @@ namespace NotifyIcon {
 			ProxyEventHandlerMethod _eventHandlerMethod = nullptr;
 
 			// Register the window class, if needed
-			bool RegisterWindowClass();
+			static bool RegisterWindowClass();
 
 		public:
 			// Properties
@@ -55,13 +55,13 @@ namespace NotifyIcon {
 			void SetEventHandlerCallback(ProxyEventHandlerMethod eventHandlerMethod);
 
 			// The handle to the window
-			HWND GetWindow();
+			HWND GetWindow() const;
 
 			// Create the window to listen for events
 			bool CreateListenerWindow();
 
 			// Called to pass an event on to the handler, if registered
-			void ForwardWindowEventToHandler(EventType eventType, int cursorX, int cursorY);
+			void ForwardWindowEventToHandler(EventType eventType, int cursorX, int cursorY) const;
 
 			// Forward the message from the static window procedure to the class instance that owns the window
 			static void ForwardWindowEventToHandler(MessageListenerWindow* ptrThis, HWND hwnd, EventType eventType);

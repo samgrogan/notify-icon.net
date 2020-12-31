@@ -119,7 +119,7 @@ void NotificationAreaIcon::ToolTip::set(String^ toolTip)
 			String^ short_tool_tip = toolTip->Substring(0, min(127, toolTip->Length));
 
 			// Get a pointer to the characters in the managed string
-			pin_ptr<const wchar_t> tool_tip_ptr = PtrToStringChars(short_tool_tip);
+			const pin_ptr<const wchar_t> tool_tip_ptr = PtrToStringChars(short_tool_tip);
 
 			// Copy to the buffer
 			wcscpy_s(_icon_data->szTip, tool_tip_ptr);
@@ -159,7 +159,7 @@ void NotificationAreaIcon::InitializeListenerWindow()
 
 	// Create the listener window
 	Monitor::Enter(MessageListenerWindowLock::GetLockObject());
-	bool result = false;
+	bool result;
 	try {
 		result = _message_listener->CreateListenerWindow();
 	}
@@ -211,8 +211,8 @@ void NotificationAreaIcon::InitializeIconData(Guid^ ItemGuid)
 
 	// Store the GUID
 	array<Byte>^ guidData = ItemGuid->ToByteArray();
-	pin_ptr<Byte> data = &(guidData[0]);
-	_icon_data->guidItem = *(_GUID*)data;
+	const pin_ptr<Byte> data = &(guidData[0]);
+	_icon_data->guidItem = *reinterpret_cast<_GUID*>(data);
 
 	// Attach the listener window
 	_icon_data->hWnd = _message_listener->GetWindow();

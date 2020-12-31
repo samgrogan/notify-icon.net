@@ -6,7 +6,7 @@ using namespace NotifyIcon::Win32;
 // Shared between all instances of the class
 ATOM MessageListenerWindow::_window_class = 0;
 
-// How many windows are using the window clas
+// How many windows are using the window class
 int MessageListenerWindow::_window_class_count = 0;
 
 // Constructor
@@ -34,7 +34,6 @@ bool MessageListenerWindow::RegisterWindowClass()
 	wndclass.lpfnWndProc = &OnMessageReceived;
 
 	// Register the window class, if it isn't already registered
-	// if (!GetClassInfoEx(app_instance, MAKEINTATOM(_window_class.load()), &wndclass))
 	if (_window_class == 0)
 	{
 		_window_class = RegisterClassEx(&wndclass);
@@ -57,7 +56,7 @@ bool MessageListenerWindow::CreateListenerWindow()
 			return false;
 		}
 
-		// Get the id of the taskbar created message
+		// Get the id of the task bar created message
 		_taskbar_created_message_id = RegisterWindowMessage(L"TaskbarCreated");
 
 		// Create the window
@@ -81,7 +80,7 @@ LRESULT CALLBACK NotifyIcon::Win32::OnMessageReceived(HWND hwnd, UINT uMsg, WPAR
 	MessageListenerWindow* ptr_this = nullptr;
 	if (uMsg == WM_NCCREATE)
 	{
-		LPCREATESTRUCT create_struct = reinterpret_cast<LPCREATESTRUCT>(lParam);
+		const LPCREATESTRUCT create_struct = reinterpret_cast<LPCREATESTRUCT>(lParam);
 		if (create_struct != nullptr)
 		{
 			ptr_this = reinterpret_cast<MessageListenerWindow*>(create_struct->lpCreateParams);
@@ -129,7 +128,11 @@ LRESULT CALLBACK NotifyIcon::Win32::OnMessageReceived(HWND hwnd, UINT uMsg, WPAR
 		case NIN_KEYSELECT:
 			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, hwnd, EventType::Select);
 			break;
+		default:
+			break;
 		}
+		break;
+	default:
 		break;
 	}
 
@@ -153,7 +156,7 @@ void MessageListenerWindow::ForwardWindowEventToHandler(MessageListenerWindow* p
 }
 
 // The handle to the window
-HWND MessageListenerWindow::GetWindow()
+HWND MessageListenerWindow::GetWindow() const
 {
 	return _window;
 }
@@ -173,7 +176,7 @@ void MessageListenerWindow::SetEventHandlerCallback(ProxyEventHandlerMethod even
 }
 
 // Called to pass an event on to the handler, if registered
-void MessageListenerWindow::ForwardWindowEventToHandler(EventType eventType, int cursorX, int cursorY)
+void MessageListenerWindow::ForwardWindowEventToHandler(EventType eventType, int cursorX, int cursorY) const
 {
 	if (_eventHandlerMethod != nullptr)
 	{

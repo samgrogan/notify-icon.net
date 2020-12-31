@@ -137,7 +137,7 @@ namespace NotifyIcon.Wpf
                     HwndSource hwndSource = PresentationSource.FromVisual(ContextMenu) as HwndSource;
                     if (hwndSource != null)
                     {
-                        _notifyIcon.SetForegroundWindow(hwndSource.Handle);
+                        NotificationAreaIcon.SetForegroundWindow(hwndSource.Handle);
                     }
                 }
             }
