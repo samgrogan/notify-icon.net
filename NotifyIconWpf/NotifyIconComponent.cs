@@ -139,7 +139,6 @@ namespace NotifyIcon.Wpf
                     {
                         _notifyIcon.SetForegroundWindow(hwndSource.Handle);
                     }
-
                 }
             }
         }

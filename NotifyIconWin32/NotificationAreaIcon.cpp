@@ -51,6 +51,9 @@ bool NotificationAreaIcon::AddOrModify()
 {
 	if (!_is_added)
 	{
+		// Delete the icon, in case a previous version exists
+		Delete();
+		// Now try to add the new icon
 		_is_added = Shell_NotifyIcon(NIM_ADD, _icon_data);
 	}
 	else
@@ -73,12 +76,10 @@ bool NotificationAreaIcon::Modify()
 // Remove the icon from the notification area
 bool NotificationAreaIcon::Delete()
 {
-	if (_is_added)
-	{
-		_is_added = !Shell_NotifyIcon(NIM_DELETE, _icon_data);
-	}
+	Shell_NotifyIcon(NIM_DELETE, _icon_data);
+	_is_added = false;
 
-	return !_is_added;
+	return true;
 }
 
 // Set the version flag

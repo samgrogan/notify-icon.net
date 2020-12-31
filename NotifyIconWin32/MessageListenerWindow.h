@@ -1,13 +1,14 @@
 #pragma once
 
+#pragma comment(lib, "user32.lib")
+#pragma comment(lib, "kernel32.lib")
+
 #include <Windows.h>
 #include <libloaderapi.h>
 #include <string>
 
-#pragma comment(lib, "user32.lib")
-#pragma comment(lib, "kernel32.lib")
-
 #include "NotificationAreaIconEvent.h"
+#include "WindowHelper.h"
 
 using namespace System;
 using namespace System::Threading;
@@ -63,7 +64,7 @@ namespace NotifyIcon {
 			void ForwardWindowEventToHandler(EventType eventType, int cursorX, int cursorY);
 
 			// Forward the message from the static window procedure to the class instance that owns the window
-			static void ForwardWindowEventToHandler(MessageListenerWindow* ptrThis, EventType eventType, POINT cursorPosition);
+			static void ForwardWindowEventToHandler(MessageListenerWindow* ptrThis, HWND hwnd, EventType eventType);
 
 			// Constructor
 			MessageListenerWindow();

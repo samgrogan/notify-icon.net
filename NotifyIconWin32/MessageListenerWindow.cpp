@@ -93,10 +93,6 @@ LRESULT CALLBACK NotifyIcon::Win32::OnMessageReceived(HWND hwnd, UINT uMsg, WPAR
 		ptr_this = reinterpret_cast<MessageListenerWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 	}
 
-	// Get the coordinates when the event occured
-	POINT cursor_position = { -1, -1 };
-	GetPhysicalCursorPos(&cursor_position);
-
 	// Pass on the events to the class instance that owns the window
 	switch (uMsg)
 	{
@@ -106,32 +102,32 @@ LRESULT CALLBACK NotifyIcon::Win32::OnMessageReceived(HWND hwnd, UINT uMsg, WPAR
 		case WM_LBUTTONDOWN:
 			break;
 		case WM_LBUTTONUP:
-			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, EventType::LeftButtonSingleClick, cursor_position);
+			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, hwnd, EventType::LeftButtonSingleClick);
 			break;
 		case WM_LBUTTONDBLCLK:
-			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, EventType::LeftButtonDoubleClick, cursor_position);
+			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, hwnd, EventType::LeftButtonDoubleClick);
 			break;
 		case WM_RBUTTONDOWN:
 			break;
 		case WM_RBUTTONUP:
-			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, EventType::RightButtonSingleClick, cursor_position);
+			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, hwnd, EventType::RightButtonSingleClick);
 			break;
 		case WM_RBUTTONDBLCLK:
-			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, EventType::RightButtonDoubleClick, cursor_position);
+			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, hwnd, EventType::RightButtonDoubleClick);
 			break;
 		case WM_MBUTTONDOWN:
 			break;
 		case WM_MBUTTONUP:
-			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, EventType::MiddleButtonSingleClick, cursor_position);
+			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, hwnd, EventType::MiddleButtonSingleClick);
 			break;
 		case WM_MBUTTONDBLCLK:
-			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, EventType::MiddleButtonDoubleClick, cursor_position);
+			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, hwnd, EventType::MiddleButtonDoubleClick);
 			break;
 		case NIN_SELECT:
-			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, EventType::Select, cursor_position);
+			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, hwnd, EventType::Select);
 			break;
 		case NIN_KEYSELECT:
-			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, EventType::Select, cursor_position);
+			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, hwnd, EventType::Select);
 			break;
 		}
 		break;
@@ -141,11 +137,18 @@ LRESULT CALLBACK NotifyIcon::Win32::OnMessageReceived(HWND hwnd, UINT uMsg, WPAR
 	return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
 
-void MessageListenerWindow::ForwardWindowEventToHandler(MessageListenerWindow* ptrThis, EventType eventType, POINT cursorPosition)
+void MessageListenerWindow::ForwardWindowEventToHandler(MessageListenerWindow* ptrThis, HWND hwnd, EventType eventType)
 {
 	if (ptrThis != nullptr)
 	{
-		ptrThis->ForwardWindowEventToHandler(eventType, cursorPosition.x, cursorPosition.y);
+		// Get the coordinates when the event occured
+		POINT cursor_position = { -1, -1 };
+		GetPhysicalCursorPos(&cursor_position);
+		// Convert to device independent coordinates
+		WindowHelper::ConvertScreenPointToDeviceIndependent(hwnd, cursor_position);
+
+		// Pass to the instance handler
+		ptrThis->ForwardWindowEventToHandler(eventType, cursor_position.x, cursor_position.y);
 	}
 }
 

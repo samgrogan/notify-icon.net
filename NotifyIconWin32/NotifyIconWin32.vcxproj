@@ -129,6 +129,7 @@
     <ClInclude Include="MessageListenerWindow.h" />
     <ClInclude Include="NotificationAreaIconEvent.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="WindowHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
@@ -137,6 +138,7 @@
     <ClCompile Include="NotificationAreaIcon.cpp" />
     <ClCompile Include="MessageListenerWindow.cpp" />
     <ClCompile Include="NotificationAreaIconEvent.cpp" />
+    <ClCompile Include="WindowHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="app.rc" />
