@@ -1,9 +1,9 @@
 #pragma once
 
-#include <string>
-#include <iostream>
+//#include <string>
+//#include <iostream>
 
-#include <windows.h>
+#include <Windows.h>
 
 using namespace System;
 
