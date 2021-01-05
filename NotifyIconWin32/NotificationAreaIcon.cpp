@@ -43,7 +43,7 @@ void NotificationAreaIcon::HideIcon()
 // Used to show the context menu
 bool NotificationAreaIcon::SetForegroundWindow(IntPtr hwndWindow)
 {
-	return ::SetForegroundWindow(reinterpret_cast<HWND>(hwndWindow.ToPointer()));
+	return ::SetForegroundWindow(static_cast<HWND>(hwndWindow.ToPointer()));
 }
 
 // Add the icon to the notification area
@@ -55,6 +55,10 @@ bool NotificationAreaIcon::AddOrModify()
 		Delete();
 		// Now try to add the new icon
 		_is_added = Shell_NotifyIcon(NIM_ADD, _icon_data);
+		if (!_is_added) {
+			Error^ error = gcnew Error();
+			error->ThrowAsException();
+		}
 	}
 	else
 	{
@@ -136,7 +140,7 @@ void NotificationAreaIcon::Icon::set(IntPtr^ hicon)
 {
 	if (hicon != nullptr)
 	{
-		_icon = reinterpret_cast<HICON>(hicon->ToPointer());
+		_icon = static_cast<HICON>(hicon->ToPointer());
 		if (_icon_data != nullptr)
 		{
 			_icon_data->hIcon = _icon;
@@ -190,7 +194,7 @@ void NotificationAreaIcon::InitializeProxyEventHandler()
 		IntPtr managedPointer = Marshal::GetFunctionPointerForDelegate(_managed_delegate);
 
 		// Pass the pointer to the listener
-		_message_listener->SetEventHandlerCallback(reinterpret_cast<ProxyEventHandlerMethod>(managedPointer.ToPointer()));
+		_message_listener->SetEventHandlerCallback(static_cast<ProxyEventHandlerMethod>(managedPointer.ToPointer()));
 	}
 }
 

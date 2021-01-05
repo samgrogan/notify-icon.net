@@ -27,16 +27,16 @@ bool MessageListenerWindow::RegisterWindowClass()
 	}
 
 	// Populate the window class
-	WNDCLASSEX wndclass = {};
-	wndclass.cbSize = sizeof(WNDCLASSEX);
-	wndclass.hInstance = app_instance;
-	wndclass.lpszClassName = class_name;
-	wndclass.lpfnWndProc = &OnMessageReceived;
+	WNDCLASSEX window_class = {};
+	window_class.cbSize = sizeof(WNDCLASSEX);
+	window_class.hInstance = app_instance;
+	window_class.lpszClassName = class_name;
+	window_class.lpfnWndProc = &OnMessageReceived;
 
 	// Register the window class, if it isn't already registered
 	if (_window_class == 0)
 	{
-		_window_class = RegisterClassEx(&wndclass);
+		_window_class = RegisterClassEx(&window_class);
 		if (_window_class == 0)
 		{
 			return false;
@@ -83,7 +83,7 @@ LRESULT CALLBACK NotifyIcon::Win32::OnMessageReceived(HWND hwnd, UINT uMsg, WPAR
 		const LPCREATESTRUCT create_struct = reinterpret_cast<LPCREATESTRUCT>(lParam);
 		if (create_struct != nullptr)
 		{
-			ptr_this = reinterpret_cast<MessageListenerWindow*>(create_struct->lpCreateParams);
+			ptr_this = static_cast<MessageListenerWindow*>(create_struct->lpCreateParams);
 			SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(ptr_this));
 		}
 	}
@@ -144,7 +144,7 @@ void MessageListenerWindow::ForwardWindowEventToHandler(MessageListenerWindow* p
 {
 	if (ptrThis != nullptr)
 	{
-		// Get the coordinates when the event occured
+		// Get the coordinates when the event occurred
 		POINT cursor_position = { -1, -1 };
 		GetPhysicalCursorPos(&cursor_position);
 		// Convert to device independent coordinates
