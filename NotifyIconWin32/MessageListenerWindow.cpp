@@ -25,6 +25,7 @@ bool MessageListenerWindow::RegisterWindowClass()
 	{
 		app_instance = nullptr;
 	}
+	_app_instance = app_instance;
 
 	// Populate the window class
 	WNDCLASSEX window_class = {};

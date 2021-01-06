@@ -14,7 +14,7 @@
 
     <ni:NotifyIconComponent x:Name="NotifyIconComponent"
                             x:Key="NotifyIconComponent"
-                            x:Uid="904a756c-8d7f-4a70-9270-d07a217943e8"
+                            x:Uid="055cf532-a707-45fb-b0a9-930805704613"
                             Icon="/Resources/Icons/no-color.ico"
                             ToolTip="{x:Static resources:Colors.NoColorToolTip}"
                             ContextMenu="{StaticResource ColorsMenu}"

@@ -47,7 +47,7 @@ namespace NotifyIcon {
 			ProxyEventHandlerMethod _eventHandlerMethod = nullptr;
 
 			// Register the window class, if needed
-			static bool RegisterWindowClass();
+			bool RegisterWindowClass();
 
 		public:
 			// Properties

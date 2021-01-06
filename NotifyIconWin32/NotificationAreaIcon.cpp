@@ -72,7 +72,8 @@ bool NotificationAreaIcon::Modify()
 {
 	if (_is_added)
 	{
-		return Shell_NotifyIcon(NIM_MODIFY, _icon_data);
+		const bool result = Shell_NotifyIcon(NIM_MODIFY, _icon_data);
+		return result;
 	}
 	return false;
 }
@@ -80,22 +81,23 @@ bool NotificationAreaIcon::Modify()
 // Remove the icon from the notification area
 bool NotificationAreaIcon::Delete()
 {
-	Shell_NotifyIcon(NIM_DELETE, _icon_data);
 	_is_added = false;
-
-	return true;
+	const bool result = Shell_NotifyIcon(NIM_DELETE, _icon_data);	
+	return result;
 }
 
 // Set the version flag
 bool NotificationAreaIcon::SetVersion()
 {
-	return Shell_NotifyIcon(NIM_SETVERSION, _icon_data);
+	const bool result = Shell_NotifyIcon(NIM_SETVERSION, _icon_data);
+	return result;
 }
 
 // Set the focus to the notification icon
 bool NotificationAreaIcon::SetFocus()
 {
-	return Shell_NotifyIcon(NIM_SETFOCUS, _icon_data);;
+	const bool result = Shell_NotifyIcon(NIM_SETFOCUS, _icon_data);
+	return result;
 }
 
 // Proxy events from the listener to the delegate
