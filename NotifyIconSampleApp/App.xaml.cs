@@ -36,6 +36,7 @@ namespace NotifyIconSampleApp
 
             // Find the notify icon component
             _notifyIconComponent = FindResource("NotifyIconComponent") as NotifyIconComponent;
+            _notifyIconComponent.ShowIcon();
         }
 
         protected override void OnExit(ExitEventArgs e)

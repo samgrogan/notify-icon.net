@@ -22,7 +22,22 @@ namespace NotifyIconSampleApp
 
     public class ColorsViewModel
     {
-        #region Commands
+        #region Properties
+
+        public string ColorGuid {
+            get {
+#if DEBUG
+                return "253df4ea-bbe2-4e0d-81de-df4426d6d37d";
+#else
+                return "055cf532-a707-45fb-b0a9-930805704613";
+#endif
+            }
+        }
+
+#endregion Properties
+
+
+#region Commands
 
         public ICommand RedMenuCommand =>
             new DelegateCommand
@@ -69,9 +84,9 @@ namespace NotifyIconSampleApp
                 }
             };
 
-        #endregion Commands
+#endregion Commands
 
-        #region Internal Methods
+#region Internal Methods
 
         private void SetColor(Color color)
         {
@@ -105,6 +120,6 @@ namespace NotifyIconSampleApp
             }
         }
 
-        #endregion Internal Methods
+#endregion Internal Methods
     }
 }

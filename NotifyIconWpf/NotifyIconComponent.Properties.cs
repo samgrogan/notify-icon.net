@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
 namespace NotifyIcon.Wpf
 {
-    public partial class NotifyIconComponent : FrameworkElement, IDisposable
-    {
+    public partial class NotifyIconComponent {
         private const string CategoryName = "NotifyIconWpf";
 
         #region MenuActivation property
@@ -64,6 +57,27 @@ namespace NotifyIcon.Wpf
         }
 
         #endregion Icon property
+
+        #region IconGuid property
+
+        // Icon Guid property
+        // Uniquely identify the notification icon to the system
+        public static readonly DependencyProperty GuidProperty = DependencyProperty.Register(
+            nameof(IconGuid),
+            typeof(string),
+            typeof(NotifyIconComponent),
+            new FrameworkPropertyMetadata(null, IconGuidPropertyChanged)
+        );
+
+        [Category(CategoryName)]
+        [Description("Uniquely identify the notification icon to the system.")]
+        public string IconGuid
+        {
+            get => GetValue(GuidProperty) as string;
+            set => SetValue(GuidProperty, value);
+        }
+
+        #endregion Icon Guid property
 
         #region Tool Tip property
 
