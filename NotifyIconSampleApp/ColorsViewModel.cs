@@ -84,6 +84,13 @@ namespace NotifyIconSampleApp
                 }
             };
 
+        public ICommand DoubleClickCommand =>
+            new DelegateCommand {
+                CommandAction = () => {
+                    System.Diagnostics.Process.Start("https://www.google.com");
+                }
+            };
+
 #endregion Commands
 
 #region Internal Methods

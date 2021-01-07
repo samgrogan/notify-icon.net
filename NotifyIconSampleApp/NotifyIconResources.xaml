@@ -18,6 +18,7 @@
                             Icon="/Resources/Icons/no-color.ico"
                             ToolTip="{x:Static resources:Colors.NoColorToolTip}"
                             ContextMenu="{StaticResource ColorsMenu}"
+                            DoubleClickCommand="{Binding DoubleClickCommand}"
                             MenuActivation="SingleClick">
         <ni:NotifyIconComponent.DataContext>
             <local:ColorsViewModel />
