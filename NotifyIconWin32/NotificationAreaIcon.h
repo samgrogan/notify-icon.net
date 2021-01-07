@@ -17,18 +17,20 @@ using namespace System::Runtime::InteropServices;
 
 namespace NotifyIcon {
 	namespace Win32 {
+
+		// Delegate type for the callback from unmanaged to managed code
+		[UnmanagedFunctionPointerAttribute(CallingConvention::Cdecl)]
+		delegate void ProxyEventHandlerDelegate(EventType eventType, int cursorX, int cursorY);
+		
 		public ref class NotificationAreaIcon : IDisposable
 		{
 		private:
-			// Delegate type for the callback from unmanaged to managed code
-			delegate void ProxyEventHandlerDelegate(EventType eventType, int cursorX, int cursorY);
 
 			// The window that is used to receive events from the notification icon
 			MessageListenerWindow* _message_listener = nullptr;
 
 			// Delegate to the managed method to call when an even occurs;
 			ProxyEventHandlerDelegate^ _managed_delegate = nullptr;
-			GCHandle^ _managed_delegate_gchandle = nullptr;
 
 			// The icon to display in the notification area
 			HICON _icon = nullptr;
