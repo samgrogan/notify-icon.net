@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NotifyIcon.Win32;
 using NotifyIcon.Wpf;
 
 namespace NotifyIcon.Test
@@ -22,7 +23,7 @@ namespace NotifyIcon.Test
             {
                 Icon = new BitmapImage(new Uri(TEST_ICON, UriKind.Relative)),
                 ToolTip = "This is a test",
-                MenuActivation = EventType.SingleClick
+                MenuActivation = EventType.SelectOrContextMenu
             };
         }
     }

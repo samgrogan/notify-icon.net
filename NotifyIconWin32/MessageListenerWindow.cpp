@@ -9,6 +9,9 @@ ATOM MessageListenerWindow::_window_class = 0;
 // How many windows are using the window class
 int MessageListenerWindow::_window_class_count = 0;
 
+// Timer ID for capturing single vs double clicks
+UINT timer_id = 0;
+
 // Constructor
 MessageListenerWindow::MessageListenerWindow()
 {
@@ -93,41 +96,21 @@ LRESULT CALLBACK NotifyIcon::Win32::OnMessageReceived(HWND hwnd, UINT uMsg, WPAR
 		ptr_this = reinterpret_cast<MessageListenerWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 	}
 
+	// The actual message is passed in the lParam
+	UINT callback_msg = LOWORD(lParam);
+
 	// Pass on the events to the class instance that owns the window
 	switch (uMsg)
 	{
-	case CALLBACK_MESSAGE_ID:
-		switch (LOWORD(lParam))
+	case MessageListenerWindow::CALLBACK_MESSAGE_ID:
+		switch (callback_msg)
 		{
-		case WM_LBUTTONDOWN:
-			break;
-		case WM_LBUTTONUP:
-			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, hwnd, EventType::LeftButtonSingleClick);
-			break;
+			// Messages to pass on
 		case WM_LBUTTONDBLCLK:
-			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, hwnd, EventType::LeftButtonDoubleClick);
-			break;
-		case WM_RBUTTONDOWN:
-			break;
-		case WM_RBUTTONUP:
-			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, hwnd, EventType::RightButtonSingleClick);
-			break;
-		case WM_RBUTTONDBLCLK:
-			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, hwnd, EventType::RightButtonDoubleClick);
-			break;
-		case WM_MBUTTONDOWN:
-			break;
-		case WM_MBUTTONUP:
-			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, hwnd, EventType::MiddleButtonSingleClick);
-			break;
-		case WM_MBUTTONDBLCLK:
-			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, hwnd, EventType::MiddleButtonDoubleClick);
-			break;
 		case NIN_SELECT:
-			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, hwnd, EventType::Select);
-			break;
 		case NIN_KEYSELECT:
-			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, hwnd, EventType::Select);
+		case WM_CONTEXTMENU:
+			MessageListenerWindow::ForwardWindowEventToHandler(ptr_this, hwnd, callback_msg);
 			break;
 		default:
 			break;
@@ -136,12 +119,12 @@ LRESULT CALLBACK NotifyIcon::Win32::OnMessageReceived(HWND hwnd, UINT uMsg, WPAR
 	default:
 		break;
 	}
-
+	
 	// Finally pass the message to the default window procedure
 	return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
 
-void MessageListenerWindow::ForwardWindowEventToHandler(MessageListenerWindow* ptrThis, HWND hwnd, EventType eventType)
+void MessageListenerWindow::ForwardWindowEventToHandler(MessageListenerWindow* ptrThis, HWND hwnd, UINT uMsg)
 {
 	if (ptrThis != nullptr)
 	{
@@ -152,9 +135,10 @@ void MessageListenerWindow::ForwardWindowEventToHandler(MessageListenerWindow* p
 		WindowHelper::ConvertScreenPointToDeviceIndependent(hwnd, cursor_position);
 
 		// Pass to the instance handler
-		ptrThis->ForwardWindowEventToHandler(eventType, cursor_position.x, cursor_position.y);
+		ptrThis->ForwardWindowEventToHandler(uMsg, cursor_position.x, cursor_position.y);
 	}
 }
+
 
 // The handle to the window
 HWND MessageListenerWindow::GetWindow() const
@@ -177,11 +161,11 @@ void MessageListenerWindow::SetEventHandlerCallback(ProxyEventHandlerMethod even
 }
 
 // Called to pass an event on to the handler, if registered
-void MessageListenerWindow::ForwardWindowEventToHandler(EventType eventType, int cursorX, int cursorY) const
+void MessageListenerWindow::ForwardWindowEventToHandler(UINT uMsg, int cursorX, int cursorY) const
 {
 	if (_eventHandlerMethod != nullptr)
 	{
-		_eventHandlerMethod(eventType, cursorX, cursorY);
+		_eventHandlerMethod(uMsg, cursorX, cursorY);
 	}
 }
 

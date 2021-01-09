@@ -16,14 +16,12 @@ using namespace System::Threading;
 namespace NotifyIcon {
 	namespace Win32 {
 
-		// The id of the callback message from the notify icon
-		const UINT CALLBACK_MESSAGE_ID = WM_APP + 1;
-
-		typedef void (*ProxyEventHandlerMethod)(EventType eventType, int cursorX, int cursorY);
+		// Type of the callback to use to route an event
+		typedef void (*ProxyEventHandlerMethod)(UINT uMsg, int cursorX, int cursorY);
 
 		// Called when a message is received by the window
 		static LRESULT CALLBACK OnMessageReceived(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-
+		
 		class MessageListenerWindow
 		{
 		private:
@@ -50,6 +48,9 @@ namespace NotifyIcon {
 			bool RegisterWindowClass();
 
 		public:
+			// The id of the callback message from the notify icon
+			static const UINT CALLBACK_MESSAGE_ID = WM_APP + 1;
+			
 			// Properties
 			// Set the function to call when an even occurs in the notification icon area
 			void SetEventHandlerCallback(ProxyEventHandlerMethod eventHandlerMethod);
@@ -61,11 +62,11 @@ namespace NotifyIcon {
 			bool CreateListenerWindow();
 
 			// Called to pass an event on to the handler, if registered
-			void ForwardWindowEventToHandler(EventType eventType, int cursorX, int cursorY) const;
+			void ForwardWindowEventToHandler(UINT uMsg, int cursorX, int cursorY) const;
 
 			// Forward the message from the static window procedure to the class instance that owns the window
-			static void ForwardWindowEventToHandler(MessageListenerWindow* ptrThis, HWND hwnd, EventType eventType);
-
+			static void ForwardWindowEventToHandler(MessageListenerWindow* ptrThis, HWND hwnd, UINT uMsg);
+			
 			// Constructor
 			MessageListenerWindow();
 

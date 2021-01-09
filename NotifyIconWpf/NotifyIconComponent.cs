@@ -120,9 +120,7 @@ namespace NotifyIcon.Wpf
         {
             switch (eventType)
             {
-                case EventType.LeftButtonDoubleClick:
-                case EventType.MiddleButtonDoubleClick:
-                case EventType.RightButtonDoubleClick:
+                case EventType.DoubleClick:
                     // Handle double click
                     if (DoubleClickCommand?.CanExecute(DoubleClickCommandParameter) == true)
                     {
@@ -170,18 +168,9 @@ namespace NotifyIcon.Wpf
             {
                 case EventType.Any:
                     return true;
-                case EventType.DoubleClick:
-                    if (eventType == EventType.LeftButtonDoubleClick ||
-                        eventType == EventType.MiddleButtonDoubleClick ||
-                        eventType == EventType.RightButtonDoubleClick)
-                    {
-                        return true;
-                    }
-                    break;
-                case EventType.SingleClick:
-                    if (eventType == EventType.LeftButtonSingleClick ||
-                        eventType == EventType.MiddleButtonSingleClick ||
-                        eventType == EventType.RightButtonSingleClick)
+                case EventType.SelectOrContextMenu:
+                    if (eventType == EventType.Select ||
+                        eventType == EventType.ContextMenu)
                     {
                         return true;
                     }

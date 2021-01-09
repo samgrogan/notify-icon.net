@@ -19,7 +19,7 @@
                             ToolTip="{x:Static resources:Colors.NoColorToolTip}"
                             ContextMenu="{StaticResource ColorsMenu}"
                             DoubleClickCommand="{Binding DoubleClickCommand}"
-                            MenuActivation="SingleClick">
+                            MenuActivation="SelectOrContextMenu">
         <ni:NotifyIconComponent.DataContext>
             <local:ColorsViewModel />
         </ni:NotifyIconComponent.DataContext>

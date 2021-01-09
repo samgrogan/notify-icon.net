@@ -13,14 +13,17 @@
 #include "NotificationAreaIconEvent.h"
 
 using namespace System;
+using namespace System::ComponentModel;
+using namespace System::Timers;
 using namespace System::Runtime::InteropServices;
+using namespace System::Windows::Threading;
 
 namespace NotifyIcon {
 	namespace Win32 {
 
 		// Delegate type for the callback from unmanaged to managed code
 		[UnmanagedFunctionPointerAttribute(CallingConvention::Cdecl)]
-		delegate void ProxyEventHandlerDelegate(EventType eventType, int cursorX, int cursorY);
+		delegate void ProxyEventHandlerDelegate(UINT uMsg, int cursorX, int cursorY);
 		
 		public ref class NotificationAreaIcon : IDisposable
 		{
@@ -41,6 +44,12 @@ namespace NotifyIcon {
 			// Has the notification area icon been added?
 			bool _is_added = false;
 
+			// Timer for delivering click events to differentiate single and double clicks
+			Threading::Timer^ _click_event_timer = nullptr;
+
+			// Store the dispatcher for the UI thread to ensure events are raised on that thread
+			Dispatcher^ _ui_dispatcher = nullptr;
+			
 			// Add the icon to the notification area
 			bool AddOrModify();
 
@@ -66,19 +75,27 @@ namespace NotifyIcon {
 			void InitializeIconData(Guid^ ItemGuid);
 
 			// Proxy events from the listener to the delegate
-			void ProxyEventHandler(EventType eventType, int cursorX, int cursorY);
+			void ProxyEventHandler(UINT uMsg, int cursorX, int cursorY);
 
+			// Translates an event from the window procedure event type to a managed event type
+			static NotifyIconEventArgs^ TranslateEvent(UINT uMsg, int cursorX, int cursorY);
 
+			// Delivers the given event to the delegates, if any
+			void DeliverEvent(NotifyIconEventArgs^ eventArgs);
+
+			// Handle an event timer
+			void OnDeliverEventTimer(Object^ source);
+		
 		public:
 			// Properties
 			// The tooltip to display when the cursor if over the notification icon
-			property String^ ToolTip { void set(String^ toolTip); }
+			property String^ ToolTip { void set(String^ toolTip); };
 
 			// The icon to display in the notification area
 			property IntPtr^ Icon { void set(IntPtr^ icon); }
 
 			// Function to call when an event occurs in the notify icon
-			event NotifyIconEventHandler^ NotificationIconEventHandler;
+			NotifyIconEventHandler^ NotificationIconEventHandler = nullptr;
 
 			// Constructor
 			NotificationAreaIcon(Guid^ ItemGuid);

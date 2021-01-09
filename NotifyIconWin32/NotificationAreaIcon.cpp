@@ -11,6 +11,9 @@ NotificationAreaIcon::NotificationAreaIcon(Guid^ ItemGuid)
 
 	// Initialize the data for the tray icon
 	InitializeIconData(ItemGuid);
+
+	// Store a reference to the dispatcher of the current thread
+	_ui_dispatcher = Dispatcher::CurrentDispatcher;
 }
 
 // Show the notification area icon
@@ -101,15 +104,72 @@ bool NotificationAreaIcon::SetFocus()
 }
 
 // Proxy events from the listener to the delegate
-void NotificationAreaIcon::ProxyEventHandler(EventType eventType, int cursorX, int cursorY)
+void NotificationAreaIcon::ProxyEventHandler(UINT uMsg, int cursorX, int cursorY)
+{
+	// Translate from unmanaged to managed event type
+	NotifyIconEventArgs^ eventArgs = TranslateEvent(uMsg, cursorX, cursorY);
+
+	// Stop any existing timers
+	if (_click_event_timer != nullptr)
+	{
+		delete _click_event_timer;
+		_click_event_timer = nullptr;
+	}
+	
+	if (eventArgs->Type == EventType::Select)
+	{
+		TimerCallback^ timer_callback = gcnew TimerCallback(this, &NotificationAreaIcon::OnDeliverEventTimer);
+		_click_event_timer = gcnew Threading::Timer(timer_callback, eventArgs, 500, Timeout::Infinite);
+	}
+	else
+	{
+		// Otherwise deliver the message now
+		DeliverEvent(eventArgs);
+	}
+}
+
+// Translates an event from the window procedure event type to a managed event type
+NotifyIconEventArgs^ NotificationAreaIcon::TranslateEvent(UINT uMsg, int cursorX, int cursorY)
 {
 	NotifyIconEventArgs^ eventArgs = gcnew NotifyIconEventArgs();
-	eventArgs->Type = eventType;
 	eventArgs->CursorX = cursorX;
 	eventArgs->CursorY = cursorY;
+	eventArgs->Type = EventType::Unknown;
+	
+	switch (uMsg)
+	{
+	case WM_LBUTTONDBLCLK:
+		eventArgs->Type = EventType::DoubleClick;
+		break;
+	case NIN_SELECT:
+	case NIN_KEYSELECT:
+		eventArgs->Type = EventType::Select;
+		break;
+	case WM_CONTEXTMENU:
+		eventArgs->Type = EventType::ContextMenu;
+	default:
+		break;
+	}
+	
+	return eventArgs;
+}
 
-	// Pass the event on to the registered handler(s)
-	NotificationIconEventHandler(this, eventArgs);
+// Delivers the given event to the delegates, if any
+void NotificationAreaIcon::DeliverEvent(NotifyIconEventArgs^ eventArgs)
+{
+	// Pass the event on to the registered handler
+	// Must be invoked on the ui thread
+	if (_ui_dispatcher != nullptr && NotificationIconEventHandler != nullptr)
+	{
+		_ui_dispatcher->Invoke(NotificationIconEventHandler, this, eventArgs);
+	}
+}
+
+// Handle an event timer
+void NotificationAreaIcon::OnDeliverEventTimer(Object^ source)
+{
+	NotifyIconEventArgs^ eventArgs = static_cast<NotifyIconEventArgs^>(source);
+	DeliverEvent(eventArgs);
 }
 
 // The tooltip to display when the cursor if over the notification icon
@@ -213,7 +273,7 @@ void NotificationAreaIcon::InitializeIconData(Guid^ ItemGuid)
 	}
 
 	// Set the id of the messages from the notification icon
-	_icon_data->uCallbackMessage = CALLBACK_MESSAGE_ID;
+	_icon_data->uCallbackMessage = MessageListenerWindow::CALLBACK_MESSAGE_ID;
 
 	// Store the GUID
 	array<Byte>^ guidData = ItemGuid->ToByteArray();
@@ -238,6 +298,13 @@ void NotificationAreaIcon::InitializeIconData(Guid^ ItemGuid)
 // Destructor
 NotificationAreaIcon::~NotificationAreaIcon()
 {
+	// Remove the timer, if any
+	if (_click_event_timer != nullptr)
+	{
+		delete _click_event_timer;
+		_click_event_timer = nullptr;
+	}
+	
 	// Delete the icon
 	Delete();
 

@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using NotifyIcon.Win32;
 
 namespace NotifyIcon.Wpf
 {
@@ -16,7 +17,7 @@ namespace NotifyIcon.Wpf
             nameof(MenuActivation),
             typeof(EventType),
             typeof(NotifyIconComponent),
-                new FrameworkPropertyMetadata(EventType.SingleClick)
+                new FrameworkPropertyMetadata(EventType.ContextMenu)
         );
 
         [Category(CategoryName)]
