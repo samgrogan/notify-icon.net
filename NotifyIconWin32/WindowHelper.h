@@ -1,7 +1,9 @@
 #pragma once
 
+#pragma comment(lib, "gdi32.lib")
+
 #include <Windows.h>
-#include <WinUser.h>
+#include <wingdi.h>
 
 namespace NotifyIcon
 {
