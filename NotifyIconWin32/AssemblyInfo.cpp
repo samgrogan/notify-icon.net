@@ -7,7 +7,7 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyTitleAttribute(L"NotifyIconWin32")];
 [assembly:AssemblyDescriptionAttribute(L"")];
 [assembly:AssemblyConfigurationAttribute(L"")];
-[assembly:AssemblyCompanyAttribute(L"")];
+[assembly:AssemblyCompanyAttribute(L"Sam Grogan")];
 [assembly:AssemblyProductAttribute(L"NotifyIconWin32")];
 [assembly:AssemblyCopyrightAttribute(L"Copyright (c)  2020")];
 [assembly:AssemblyTrademarkAttribute(L"")];

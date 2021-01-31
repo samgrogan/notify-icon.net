@@ -6,9 +6,12 @@
     <RootNamespace>NotifyIcon.Wpf</RootNamespace>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Authors>Sam Grogan</Authors>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Platforms>AnyCPU;x86</Platforms>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <Company />
+    <Product>NotifyIcon.NET</Product>
+    <PackageId>NotifyIcon.NET</PackageId>
   </PropertyGroup>
 
   <ItemGroup>

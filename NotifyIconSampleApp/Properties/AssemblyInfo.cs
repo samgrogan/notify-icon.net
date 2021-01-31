@@ -11,7 +11,7 @@ using System.Windows.Media;
 [assembly: AssemblyTitle("NotifyIconSampleApp")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Sam Grogan")]
 [assembly: AssemblyProduct("NotifyIconSampleApp")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
