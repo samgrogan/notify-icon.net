@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package >
   <metadata>
-    <id>$id$</id>
-    <version>$version$</version>
-    <title>$title$</title>
-    <authors>$author$</authors>
+    <id>SamGrogan.NotifyIcon.Net</id>
+    <version>1.0.0</version>
+    <title>NotifyIcon.NET</title>
+    <authors>Sam Grogan</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/samgrogan/notify-icon.net</projectUrl>
-    <description>$description$</description>
+    <description>.NET-friendly implementation of a shell notification icon for rich "tray" applications. Support for Win 7-10. Include a control for use in WPF applications, but can be used in any kind of .NET project. Currently .NET Framework only.</description>
     <releaseNotes>Initial Release</releaseNotes>
-    <copyright>$copyright$</copyright>
-    <tags>Tag1 Tag2</tags>
+    <copyright>© 2021 Sam Grogan</copyright>
+    <tags>WPF Shell Tray NotifyIcon Notify ToolTip</tags>
+	<repository type="git" url="https://github.com/samgrogan/notify-icon.net.git" branch="main" />
+	<dependencies>
+		<group targetFramework=".NETFramework4.6.2" />
+	</dependencies>
   </metadata>
   <files>
-	<file src="..\LICENSE" target="" />
-	<file src=".\bin\x86\Release\net462\*.dll" target="lib" />
+	<file src="..\LICENSE.txt" target="" />
+	<file src="..\README.md" target="" />
+	<file src=".\bin\x86\Release\net462\*.dll" target="lib\net462" />
   </files>
 </package>

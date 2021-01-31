@@ -1,0 +1,1 @@
+..\Nuget\nuget.exe pack NotifyIconWpf.nuspec -OutputDirectory ..\Nuget
