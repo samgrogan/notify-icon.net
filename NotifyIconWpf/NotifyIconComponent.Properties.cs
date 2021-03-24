@@ -48,7 +48,7 @@ namespace NotifyIcon.Wpf
             get => GetValue(IconProperty) as ImageSource;
             set
             {
-                SetValue(IconProperty, value);
+                SetCurrentValue(IconProperty, value);
                 _icon = value?.ToIcon();
                 if (_notifyIcon != null)
                 {
@@ -75,7 +75,7 @@ namespace NotifyIcon.Wpf
         public string IconGuid
         {
             get => GetValue(GuidProperty) as string;
-            set => SetValue(GuidProperty, value);
+            set => SetCurrentValue(GuidProperty, value);
         }
 
         #endregion Icon Guid property
