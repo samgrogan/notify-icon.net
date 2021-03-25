@@ -5,6 +5,7 @@ using System.Drawing;
 using NotifyIcon.Win32;
 using System.Windows.Controls.Primitives;
 using System.Windows.Interop;
+using System.Windows.Threading;
 
 namespace NotifyIcon.Wpf
 {
@@ -62,6 +63,9 @@ namespace NotifyIcon.Wpf
         // Make the notification icon visible
         public void ShowIcon()
         {
+            // Ensure the latest data binding has been applied
+            Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.DataBind);
+
             // Create the Win32 notify icon, if needed
             if (_notifyIcon == null)
             {
