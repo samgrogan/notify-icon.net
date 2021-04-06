@@ -49,6 +49,9 @@ namespace NotifyIcon {
 
 			// Store the dispatcher for the UI thread to ensure events are raised on that thread
 			Dispatcher^ _ui_dispatcher = nullptr;
+
+			// Track when we are handling a double click
+			bool _handling_double_click = false;
 			
 			// Add the icon to the notification area
 			bool AddOrModify();

@@ -110,16 +110,21 @@ void NotificationAreaIcon::ProxyEventHandler(UINT uMsg, int cursorX, int cursorY
 	NotifyIconEventArgs^ eventArgs = TranslateEvent(uMsg, cursorX, cursorY);
 
 	// Stop any existing timers
-	if (_click_event_timer != nullptr)
+	// Double-click event takes priority
+	if (_click_event_timer != nullptr && !_handling_double_click)
 	{
 		delete _click_event_timer;
 		_click_event_timer = nullptr;
 	}
 	
-	if (eventArgs->Type == EventType::Select)
+	if (eventArgs->Type == EventType::Select || eventArgs->Type == EventType::DoubleClick)
 	{
-		TimerCallback^ timer_callback = gcnew TimerCallback(this, &NotificationAreaIcon::OnDeliverEventTimer);
-		_click_event_timer = gcnew Threading::Timer(timer_callback, eventArgs, 500, Timeout::Infinite);
+		// Wait for a double click event to finish
+		if (!_handling_double_click) {
+			TimerCallback^ timer_callback = gcnew TimerCallback(this, &NotificationAreaIcon::OnDeliverEventTimer);
+			_click_event_timer = gcnew Threading::Timer(timer_callback, eventArgs, 500, Timeout::Infinite);
+			_handling_double_click = eventArgs->Type == EventType::DoubleClick;
+		}
 	}
 	else
 	{
@@ -170,6 +175,11 @@ void NotificationAreaIcon::OnDeliverEventTimer(Object^ source)
 {
 	NotifyIconEventArgs^ eventArgs = static_cast<NotifyIconEventArgs^>(source);
 	DeliverEvent(eventArgs);
+
+	// Mark double click as handled
+	if (eventArgs->Type == EventType::DoubleClick) {
+		_handling_double_click = false;
+	}
 }
 
 // The tooltip to display when the cursor if over the notification icon
