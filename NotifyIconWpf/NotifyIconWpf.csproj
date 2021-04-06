@@ -5,17 +5,17 @@
     <UseWPF>true</UseWPF>
     <RootNamespace>NotifyIcon.Wpf</RootNamespace>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Authors></Authors>
+    <Authors>Sam Grogan</Authors>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Platforms>AnyCPU;x86</Platforms>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <Company />
+    <Company>Sam Grogan</Company>
     <Product>NotifyIcon.NET</Product>
     <PackageId></PackageId>
     <Description></Description>
-    <Copyright></Copyright>
+    <Copyright>Sam Grogan</Copyright>
     <PackageTags></PackageTags>
-    <Version>1.0.2</Version>
+    <Version>1.0.3.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
