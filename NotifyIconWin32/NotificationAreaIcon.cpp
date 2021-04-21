@@ -42,6 +42,14 @@ void NotificationAreaIcon::HideIcon()
 	SetVersion();
 }
 
+void NotificationAreaIcon::RefreshIcon() {
+	try {
+		Shell_NotifyIcon(NIM_ADD, _icon_data);
+		Shell_NotifyIcon(NIM_MODIFY, _icon_data);
+	}
+	catch (...) { }
+}
+
 // Set the foreground window to the given window
 // Used to show the context menu
 bool NotificationAreaIcon::SetForegroundWindow(IntPtr hwndWindow)
@@ -57,8 +65,7 @@ bool NotificationAreaIcon::AddOrModify()
 		// Delete the icon, in case a previous version exists
 		Delete();
 		// Now try to add the new icon
-		// Using just NIM_ADD can lead to issues if Explorer crashes, mitigated by also calling NIM_MODIFY
-		_is_added = Shell_NotifyIcon(NIM_ADD, _icon_data) && Shell_NotifyIcon(NIM_MODIFY, _icon_data);
+		_is_added = Shell_NotifyIcon(NIM_ADD, _icon_data);
 		if (!_is_added) {
 			Error^ error = gcnew Error();
 			error->ThrowAsException();
