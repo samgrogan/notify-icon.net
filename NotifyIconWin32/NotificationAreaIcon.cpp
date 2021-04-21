@@ -57,7 +57,8 @@ bool NotificationAreaIcon::AddOrModify()
 		// Delete the icon, in case a previous version exists
 		Delete();
 		// Now try to add the new icon
-		_is_added = Shell_NotifyIcon(NIM_ADD, _icon_data);
+		// Using just NIM_ADD can lead to issues if Explorer crashes, mitigated by also calling NIM_MODIFY
+		_is_added = Shell_NotifyIcon(NIM_ADD, _icon_data) && Shell_NotifyIcon(NIM_MODIFY, _icon_data);
 		if (!_is_added) {
 			Error^ error = gcnew Error();
 			error->ThrowAsException();
