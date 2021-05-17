@@ -109,6 +109,9 @@ namespace NotifyIcon {
 			// Hide the notification area icon
 			void HideIcon();
 
+			// Used to periodically add/modify icon, used mitigate issues with Explorer crashing
+			void RefreshIcon();
+
 			// Set the foreground window to the given window
 			// Used to show the context menu
 			static bool SetForegroundWindow(IntPtr hwndWindow);

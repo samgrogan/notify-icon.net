@@ -42,6 +42,14 @@ void NotificationAreaIcon::HideIcon()
 	SetVersion();
 }
 
+void NotificationAreaIcon::RefreshIcon() {
+	try {
+		Shell_NotifyIcon(NIM_ADD, _icon_data);
+		Shell_NotifyIcon(NIM_MODIFY, _icon_data);
+	}
+	catch (...) { }
+}
+
 // Set the foreground window to the given window
 // Used to show the context menu
 bool NotificationAreaIcon::SetForegroundWindow(IntPtr hwndWindow)

@@ -6,6 +6,7 @@ using NotifyIcon.Win32;
 using System.Windows.Controls.Primitives;
 using System.Windows.Interop;
 using System.Windows.Threading;
+using System.Threading.Tasks;
 
 namespace NotifyIcon.Wpf
 {
@@ -21,6 +22,9 @@ namespace NotifyIcon.Wpf
 
         // The icon to display
         private Icon _icon;
+
+        // Icon refresh interval
+        private const int _refreshInterval = 300000;
 
         #endregion Members
 
@@ -86,6 +90,12 @@ namespace NotifyIcon.Wpf
 
             // Show the icon
             _notifyIcon.ShowIcon();
+
+            // Periodically check the icon (every 5 min)
+            Task.Run(async () => {
+                await Task.Delay(_refreshInterval);
+                RefreshIcon();
+            });
         }
 
         // Hide the notification icon
@@ -102,6 +112,16 @@ namespace NotifyIcon.Wpf
         {
             NotifyIconComponent source = d as NotifyIconComponent;
             source?.OnIconChanged(e);
+        }
+
+        private void RefreshIcon() {
+            _notifyIcon?.RefreshIcon();
+
+            // Periodically check the icon (every 5 min)
+            Task.Run(async () => {
+                await Task.Delay(_refreshInterval);
+                RefreshIcon();
+            });
         }
 
         private void OnIconChanged(DependencyPropertyChangedEventArgs e)
