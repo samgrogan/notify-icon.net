@@ -2,14 +2,14 @@
 <package >
   <metadata>
     <id>SamGrogan.NotifyIcon.Net</id>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <title>NotifyIcon.NET</title>
     <authors>Sam Grogan</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/samgrogan/notify-icon.net</projectUrl>
     <description>.NET-friendly implementation of a shell notification icon for rich "tray" applications. Support for Win 7-10. Include a control for use in WPF applications, but can be used in any kind of .NET project. Currently .NET Framework only.</description>
-    <releaseNotes>Fixed an issue with the content menu sticking on double-click.</releaseNotes>
+    <releaseNotes>Misc. bug fixes.</releaseNotes>
     <copyright>© 2021 Sam Grogan</copyright>
     <tags>WPF Shell Tray NotifyIcon Notify ToolTip</tags>
 	<repository type="git" url="https://github.com/samgrogan/notify-icon.net.git" branch="main" />
