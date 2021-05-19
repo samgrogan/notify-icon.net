@@ -16,17 +16,28 @@ NotificationAreaIcon::NotificationAreaIcon(Guid^ ItemGuid)
 	_ui_dispatcher = Dispatcher::CurrentDispatcher;
 }
 
+// Get the last error
+Error^ NotificationAreaIcon::GetLastError() {
+	return gcnew Error();
+}
+
 // Show the notification area icon
-void NotificationAreaIcon::ShowIcon()
+bool NotificationAreaIcon::ShowIcon()
 {
 	// Update the visibility
 	_icon_data->dwState = 0;
 
 	// Add or modify the icon
-	AddOrModify();
+	if (!AddOrModify()) {
+		return false;
+	}
 
 	// Set the version
-	SetVersion();
+	if (!SetVersion()) {
+		return false;
+	} 
+
+	return true;
 }
 
 // Hide the notification area icon
@@ -66,10 +77,6 @@ bool NotificationAreaIcon::AddOrModify()
 		Delete();
 		// Now try to add the new icon
 		_is_added = Shell_NotifyIcon(NIM_ADD, _icon_data);
-		if (!_is_added) {
-			Error^ error = gcnew Error();
-			error->ThrowAsException();
-		}
 	}
 	else
 	{
