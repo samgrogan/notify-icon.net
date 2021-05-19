@@ -103,8 +103,11 @@ namespace NotifyIcon {
 			// Constructor
 			NotificationAreaIcon(Guid^ ItemGuid);
 
+			// Get the last error
+			Error^ GetLastError();
+
 			// Show the notification area icon
-			void ShowIcon();
+			bool ShowIcon();
 
 			// Hide the notification area icon
 			void HideIcon();

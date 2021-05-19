@@ -64,8 +64,18 @@ namespace NotifyIcon.Wpf
             }
         }
 
+        // Get the last exception
+        public Exception GetLastException() {
+            if(_notifyIcon != null) {
+                return _notifyIcon.GetLastError().ToException();
+            }
+            else {
+                return null;
+            }
+        }
+
         // Make the notification icon visible
-        public void ShowIcon()
+        public bool ShowIcon()
         {
             // Ensure the latest data binding has been applied
             Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.DataBind);
@@ -89,13 +99,19 @@ namespace NotifyIcon.Wpf
             }
 
             // Show the icon
-            _notifyIcon.ShowIcon();
+            if (_notifyIcon.ShowIcon()) {
+                // Periodically check the icon (every 5 min)
+                Task.Run(async () => {
+                    await Task.Delay(_refreshInterval);
+                    RefreshIcon();
+                });
 
-            // Periodically check the icon (every 5 min)
-            Task.Run(async () => {
-                await Task.Delay(_refreshInterval);
-                RefreshIcon();
-            });
+                return true;
+            }
+            else {
+                // If Win32 failed, return false
+                return false;
+            }
         }
 
         // Hide the notification icon
