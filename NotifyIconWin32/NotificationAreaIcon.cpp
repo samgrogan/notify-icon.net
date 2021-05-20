@@ -57,6 +57,7 @@ void NotificationAreaIcon::RefreshIcon() {
 	try {
 		Shell_NotifyIcon(NIM_ADD, _icon_data);
 		Shell_NotifyIcon(NIM_MODIFY, _icon_data);
+		SetVersion();
 	}
 	catch (...) { }
 }
