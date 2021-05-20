@@ -282,7 +282,7 @@ void NotificationAreaIcon::InitializeProxyEventHandler()
 		IntPtr managed_pointer = Marshal::GetFunctionPointerForDelegate(_managed_delegate);
 
 		// Pass the pointer to the listener
-		 _message_listener->SetEventHandlerCallback(static_cast<ProxyEventHandlerMethod>(managed_pointer.ToPointer()));
+		_message_listener->SetEventHandlerCallback(static_cast<ProxyEventHandlerMethod>(managed_pointer.ToPointer()));
 	}
 }
 
