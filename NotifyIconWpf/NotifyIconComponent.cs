@@ -24,7 +24,7 @@ namespace NotifyIcon.Wpf
         private Icon _icon;
 
         // Icon refresh interval
-        private const int _refreshInterval = 300000;
+        private const int _refreshInterval = 60000;
 
         #endregion Members
 
