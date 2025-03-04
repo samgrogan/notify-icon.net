@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <TargetFramework>net462</TargetFramework>
+    <TargetFrameworks>net8.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <RootNamespace>NotifyIcon.Wpf</RootNamespace>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -17,6 +17,10 @@
     <PackageTags></PackageTags>
     <Version>1.0.6.0</Version>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="9.0.2" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\NotifyIconWin32\NotifyIconWin32.vcxproj" />
