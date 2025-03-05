@@ -15,7 +15,7 @@ namespace NotifyIcon.Test
     {
         public const string TEST_ICON = "Resources/Icons/test.ico";
 
-        [STATestMethod]
+
         [TestMethod]
         public void SimpleCreateDestory()
         {
