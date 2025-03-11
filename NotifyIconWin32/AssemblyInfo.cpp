@@ -9,11 +9,11 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyConfigurationAttribute(L"")];
 [assembly:AssemblyCompanyAttribute(L"Sam Grogan")];
 [assembly:AssemblyProductAttribute(L"NotifyIconWin32")];
-[assembly:AssemblyCopyrightAttribute(L"Copyright (c)  2021")];
+[assembly:AssemblyCopyrightAttribute(L"Copyright (c)  2025")];
 [assembly:AssemblyTrademarkAttribute(L"")];
 [assembly:AssemblyCultureAttribute(L"")];
 
-[assembly:AssemblyVersionAttribute("1.0.*")];
+[assembly:AssemblyVersionAttribute("2.0.*")];
 
 [assembly:ComVisible(false)];
 
